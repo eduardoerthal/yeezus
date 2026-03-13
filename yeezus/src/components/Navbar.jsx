@@ -1,0 +1,25 @@
+import { Link } from "react-router-dom";
+import "./Navbar.css";
+
+function Navbar() {
+  return (
+    <header className="navbar">
+
+      <div className="logo">Yeezus</div>
+
+      <ul className="nav-links">
+        <li><Link to="/">Inicio</Link></li>
+        <li><Link to="/sobre">Sobre</Link></li>
+        <li><Link to="/support">Support</Link></li>
+      </ul>
+
+      <div className="nav-right">
+        <Link className="entrar" to="/entrar">Entrar</Link>
+        <Link className="cadastrar" to="/cadastro">Cadastrar</Link>
+      </div>
+
+    </header>
+  );
+}
+
+export default Navbar;

@@ -1,0 +1,76 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins', sans-serif;
+}
+
+body{
+background:#07080a;
+color:white;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:25px 80px;
+}
+
+.logo{
+font-size:24px;
+font-weight:600;
+}
+
+.nav-links{
+display:flex;
+gap:30px;
+list-style:none;
+}
+
+.nav-links a{
+text-decoration:none;
+color:#cbd5ff;
+font-size:15px;
+}
+
+.nav-right{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.cadastrar{
+background:#9a0000;
+padding:10px 20px;
+border-radius:8px;
+text-decoration:none;
+color:white;
+}
+
+/* HERO */
+
+.hero{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:0 20px;
+}
+
+.hero h1{
+font-size:48px;
+max-width:700px;
+margin-bottom:20px;
+}
+
+.hero p{
+color:#b0b7e0;
+max-width:600px;
+margin-bottom:40px;
+line-height:1.6;
+}
