@@ -9,10 +9,7 @@ function Cadastro() {
         <h1>Cadastro</h1>
 
         <input type="text" placeholder="Nome" />
-        <input type="email" placeholder="E-mail" />
-        <input type="password" placeholder="Senha" />
-
-        <button>Cadastrar</button>
+        <a className="cadastro" href="/cadastro_resto">Continuar Cadastro</a>
       </div>
 
     </div>

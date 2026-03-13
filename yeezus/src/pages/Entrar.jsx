@@ -8,8 +8,7 @@ function Entrar() {
       <div className="form">
         <h1>Entrar</h1>
 
-        <input type="text" placeholder="Nome" />
-        <input type="email" placeholder="E-mail" />
+        <input type="text" placeholder="CPF" />
         <input type="password" placeholder="Senha" />
         <input type="password" placeholder="Confirmar senha" />
 
