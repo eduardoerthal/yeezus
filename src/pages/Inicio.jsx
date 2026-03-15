@@ -1,0 +1,60 @@
+import React from "react";
+import "../styles/Inicio.css";
+import { Navbar } from "../components/Navbar.jsx";
+
+function Inicio() {
+  return (
+    <>
+      <Navbar />
+
+      <section className="hero-ye">
+        <div className="hero-ye__container" data-testid="container">
+          <div className="hero-ye__content">
+            
+            <div className="hero-ye__header">
+              <h1 className="hero-ye__title">Yeezus</h1>
+              <p className="hero-ye__description">
+                Onde sua vida financeira atinge o impossível
+              </p>
+              <div className="hero-ye__actions">
+                <button className="btn--primary">Abra sua conta</button>
+                <button className="btn--secondary">Saiba mais</button>
+              </div>
+            </div>
+
+            <div className="hero-ye__card-image">
+              <img src="../public/fundo-ye.jpg" alt="Cartão Yeezus" />
+            </div>
+
+            <div className="hero-ye__footer-links">
+              <a href="https://www.yei.com.br/consultoria/" className="card-link">
+                <div className="card-link__wrapper">
+                  <p className="card-link__text">
+                    <strong>CONSULTORIA ye:</strong> planejamento exclusivo com visão de longo prazo
+                  </p>
+                  <button className="btn--inline" type="button">
+                    Saiba mais →
+                  </button>
+                </div>
+              </a>
+
+              <a href="https://lp.yei.com.br/cdb-150" className="card-link">
+                <div className="card-link__wrapper">
+                  <p className="card-link__text">
+                    <strong>CDB 150% DO BANCO ye:</strong> invista até R$60 mil com garantia do FGC
+                  </p>
+                  <button className="btn--inline" type="button">
+                    Abra sua conta →
+                  </button>
+                </div>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
+
+export default Inicio;
