@@ -14,6 +14,7 @@ function Router() {
         <Route path="/entrar" element={<Entrar />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="/cadastro_resto" element={<Cadastro_resto />} />
+        <Route path="/cadastre_aqui" element={<Cadastro />} />
 
       </Routes>
     </BrowserRouter>

@@ -45,7 +45,7 @@ body, html {
   gap: 15px;
 }
 
-.btn--primary {
+.cadastre_aqui {
   background-color: #9A0000;
   color: #000;
   border: none;
@@ -55,7 +55,7 @@ body, html {
   cursor: pointer;
 }
 
-.btn--secondary {
+.saiba_mais {
   background-color: #333;
   color: #fff;
   border: none;

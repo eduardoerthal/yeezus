@@ -1,6 +1,7 @@
 import React from "react";
 import "../styles/Inicio.css";
 import { Navbar } from "../components/Navbar.jsx";
+import { Link } from "react-router-dom";
 
 function Inicio() {
   return (
@@ -17,8 +18,8 @@ function Inicio() {
                 Onde sua vida financeira atinge o impossível
               </p>
               <div className="hero-ye__actions">
-                <button className="btn--primary">Abra sua conta</button>
-                <button className="btn--secondary">Saiba mais</button>
+                <Link className="cadastre_aqui" to="/cadastro">Abra sua Conta</Link>
+                <Link className="saiba_mais" to="/sobre">Saiba Mais</Link>
               </div>
             </div>
 

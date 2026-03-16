@@ -15,7 +15,7 @@ export function Navbar() {
 
       <div className="nav-right">
         <Link className="entrar" to="/entrar">Entrar</Link>
-        <Link className="cadastrar" to="/cadastro">Cadastrar</Link>
+        <Link className="cadastrar" to="/cadastro">Abra sua Conta</Link>
       </div>
 
     </header>
