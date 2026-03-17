@@ -84,7 +84,7 @@ body, html {
 }
 
 .card-link__wrapper {
-  background-color: #5c5c5c;
+  background-color: #5c5c5c;  
   padding: 20px;
   border-radius: 12px;
   transition: 0.3s;
@@ -98,7 +98,7 @@ body, html {
 }
 
 .card-link__text {
-  display: flex;
+  display: flex ;
   font-size: 0.9rem;
   margin-bottom: 15px;
 }
