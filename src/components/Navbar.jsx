@@ -11,6 +11,7 @@ export function Navbar() {
         <li><Link to="/">Inicio</Link></li>
         <li><Link to="/sobre">Sobre</Link></li>
         <li><Link to="/support">Support</Link></li>
+        <li><Link to="/YeBOT">yeBOT</Link></li>
       </ul>
 
       <div className="nav-right">

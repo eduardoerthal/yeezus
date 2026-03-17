@@ -23,12 +23,9 @@ function Inicio() {
               </div>
             </div>
 
-            <div className="hero-ye__card-image">
-              <img src="../public/fundo-ye.jpg" alt="Cartão Yeezus" />
-            </div>
 
             <div className="hero-ye__footer-links">
-              <a href="https://www.yei.com.br/consultoria/" className="card-link">
+              <a  className="card-link">
                 <div className="card-link__wrapper">
                   <p className="card-link__text">
                     <strong>CONSULTORIA ye:</strong> planejamento exclusivo com visão de longo prazo
@@ -39,7 +36,7 @@ function Inicio() {
                 </div>
               </a>
 
-              <a href="https://lp.yei.com.br/cdb-150" className="card-link">
+              <a className="card-link">
                 <div className="card-link__wrapper">
                   <p className="card-link__text">
                     <strong>CDB 150% DO BANCO ye:</strong> invista até R$60 mil com garantia do FGC
