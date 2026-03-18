@@ -5,6 +5,9 @@ import Message from './Mesage';
 import Bear from './Bear';
 import { getGeminiResponse } from '../../services/geminiService';
 import './chat.css';
+import Logo from "../../assets/logo.svg";
+import { Link } from "react-router-dom";
+
 
 const QUICK_PROMPTS = [
   { label: 'O que é Bitcoin?', icon: <Wallet size={12} /> },
@@ -69,10 +72,14 @@ export default function ChatPage() {
             <p>ASSISTENTE FINANCEIRO</p>
           </div>
         </div>
-        <div className="header-badge">
-          <Sparkles size={12} className="prompt-icon" />
-          <span>YEEZUS</span>
+
+        <div className="logo">
+        <Link to="/">
+          <img src={Logo} alt="Yeezus Logo" />
+        </Link>
         </div>
+
+        
       </header>
 
 

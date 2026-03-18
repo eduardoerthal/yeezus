@@ -1,14 +1,16 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
-import logo from "../assets/logo.svg";
+import Logo from "../assets/logo.svg";
 
 export function Navbar() {
   return (
     <header className="navbar">
 
       <div className="logo">
-  <img src={logo} alt="Yeezus Logo" />
-  </div>
+        <Link to="/">
+          <img src={Logo} alt="Yeezus Logo" />
+        </Link>
+      </div>
 
       <ul className="nav-links">
         <li><Link to="/">Inicio</Link></li>
