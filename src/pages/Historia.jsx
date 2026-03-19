@@ -1,16 +1,16 @@
 import React from "react";
-import "../styles/Sobre.css";
+import "../styles/Historia.css";
 import { Navbar } from "../components/Navbar.jsx";
 import { Link } from "react-router-dom";
 
 function Sobre() {
 return ( 
-    <>
+    <> 
     <Navbar />
     <section className="hero-sobre">
 
     <div className="sobre-container">
-        <h1>Sobre Nós</h1>
+        <h1>Nossa História</h1>
 
         <p>
         Nosso projeto foi criado com o objetivo de oferecer uma plataforma

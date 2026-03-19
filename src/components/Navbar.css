@@ -47,6 +47,7 @@ color:white;
   position: relative;
 }
 
+/* dropdown do sobre */
 /* deixa escondido */
 .dropdown{
   position: absolute;
@@ -64,7 +65,7 @@ color:white;
   transition: all 0.25s ease;
 }
 
-/* aparece quando o mouse estiver no "Sobre" */
+/* aparece quando o mouse estiver no sobre */
 .menu-item:hover .dropdown{
   opacity: 1;
   visibility: visible;
@@ -73,5 +74,8 @@ color:white;
 .dropdown-column h4{
   font-size: 14px;
   color: #9a0000;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+}
+.dropdown li{
+    margin-bottom: 12px;
 }

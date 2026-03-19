@@ -98,7 +98,7 @@ body, html {
 }
 
 .card-link__text {
-  display: flex ;
+  display:grid;
   font-size: 0.9rem;
   margin-bottom: 15px;
 }
