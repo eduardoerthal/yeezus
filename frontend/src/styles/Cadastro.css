@@ -1,15 +1,23 @@
+body, html {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #080808;
+}
 
 .cadastro {
   display: inline-block;
   margin-top: 20px;
-  padding: 12px 25px;
-  background-color: #9a0000;
+  padding: 15px;
+  background-color:#700000;
   color: white;
   text-decoration: none;
   border-radius: 8px;
   font-size: 16px;
-  text-align: center;
   cursor: pointer;
+  display: block;
+  text-align: center;
+  
 }
 
 .container {
@@ -19,21 +27,27 @@
   gap: 15px;
 }
 
-.campo {
-  width: 250px;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-}
 
 .botao {
   width: 270px;
   padding: 10px;
-  background-color:#9a0000;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   font-size: 16px;
+}
+
+.form{
+  color: #fff;
+  background-color:#9a0000;
+  width: 400px;
+}
+
+input{
+  border-radius: 0;
+}
+h1{
+  margin-top: 10px;
+  margin-bottom: 60px;
 }

@@ -28,21 +28,11 @@ function Inicio() {
               <a  className="card-link">
                 <div className="card-link__wrapper">
                   <p className="card-link__text">
-                    <strong>CONSULTORIA ye:</strong> planejamento exclusivo com visão de longo prazo
+                    <strong>CONSULTORIA YE:</strong> 
+                    <p>Planejamento exclusivo com visão de longo prazo</p>
                   </p>
                   <button className="btn--inline" type="button">
-                    Saiba mais →
-                  </button>
-                </div>
-              </a>
-
-              <a className="card-link">
-                <div className="card-link__wrapper">
-                  <p className="card-link__text">
-                    <strong>CDB 150% DO BANCO ye:</strong> invista até R$60 mil com garantia do FGC
-                  </p>
-                  <button className="btn--inline" type="button">
-                    Abra sua conta →
+                    Saiba mais
                   </button>
                 </div>
               </a>
