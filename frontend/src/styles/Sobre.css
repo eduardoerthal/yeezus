@@ -1,0 +1,28 @@
+.hero-sobre {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color:#111;
+  color: white;
+}
+
+.sobre-container {
+  max-width: 700px;
+  text-align: center;
+  padding: 40px;
+}
+
+.sobre-container h1 {
+  margin-bottom: 20px;
+}
+
+.btn-voltar {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #9A0000;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+}
