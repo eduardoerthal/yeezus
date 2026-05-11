@@ -6,6 +6,7 @@ import Cadastro from "../pages/Cadastro_inical.jsx";
 import Cadastro_resto from "../pages/Cadastro.jsx";
 import ChatPage from "../pages/chat/ChatPage.jsx";
 import Sobre from "../pages/Sobre.jsx";
+import Dashboard from "../pages/Dashboard.jsx";
 
 function Router() {
   return (
@@ -19,6 +20,7 @@ function Router() {
         <Route path="/cadastre_aqui" element={<Cadastro />} />
         <Route path="/yeBOT" element={ <ChatPage />} />
         <Route path="/sobre" element={<Sobre /> } />
+        <Route path="/dashboard" element={<Dashboard />} />
 
       </Routes>
     </BrowserRouter>
