@@ -1,6 +1,7 @@
 import React, { useReducer } from "react";
 
 import "../styles/Cadastro.css";
+import Navbar from "../components/Navbar";
 
 import Navbar from "../components/Navbar";
 
