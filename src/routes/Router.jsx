@@ -7,6 +7,8 @@ import Cadastro_resto from "../pages/Cadastro.jsx";
 import ChatPage from "../pages/chat/ChatPage.jsx";
 import Sobre from "../pages/Sobre.jsx";
 import Dashboard from "../pages/Dashboard.jsx";
+import Metas from "../pages/Metas.jsx";
+import MetaForm from "../pages/MetaForm.jsx";
 
 function Router() {
   return (
@@ -21,6 +23,9 @@ function Router() {
         <Route path="/yeBOT" element={ <ChatPage />} />
         <Route path="/sobre" element={<Sobre /> } />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/metas" element={<Metas />} />
+        <Route path="/metas/nova" element={<MetaForm />} />
+        <Route path="/metas/:id/editar" element={<MetaForm />} />
 
       </Routes>
     </BrowserRouter>

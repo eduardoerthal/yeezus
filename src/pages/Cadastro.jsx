@@ -36,7 +36,6 @@ function Cadastro_resto() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 🔒 validação simples
     if (!state.nome || !state.email || !state.senha) {
       alert("Preencha todos os campos");
       return;
@@ -46,7 +45,6 @@ function Cadastro_resto() {
       await userService.createUser(state);
       alert("Usuário cadastrado com sucesso!");
 
-      // limpa o form
       dispatch({
         type: "update",
         data: { nome: "", email: "", senha: "" }

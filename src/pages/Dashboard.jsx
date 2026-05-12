@@ -26,7 +26,7 @@ function Dashboard() {
           <button className="nav-item active">Visão Geral</button>
           <button className="nav-item">Transações</button>
           <button className="nav-item">Investimentos</button>
-          <button className="nav-item">Metas</button>
+          <Link to="/metas" className="nav-item">Metas</Link>
         </nav>
         <div className="sidebar-footer">
           <button className="btn-sair">Sair</button>
