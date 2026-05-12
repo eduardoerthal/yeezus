@@ -50,6 +50,9 @@ export function Navbar() {
 
         <li><Link to="/support">Support</Link></li>
         <li><Link to="/YeBOT">yeBOT</Link></li>
+
+        <li><Link to="/relatorios">Relatórios</Link></li>
+        <li><Link to="/planejamento">Planejamento</Link></li>
       </ul>
 
       <div className="nav-right">

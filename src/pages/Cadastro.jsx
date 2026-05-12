@@ -1,8 +1,11 @@
 import React from "react";
 import "../styles/Cadastro.css";
+import Navbar from "../components/Navbar";
 
 function Cadastro_resto(){
     return(
+      <>
+      <Navbar />
         <div className="container">
             
       <div className="form">
@@ -14,6 +17,7 @@ function Cadastro_resto(){
         <button className="botao">Cadastrar</button>
       </div>
         </div>
+        </>
     );
 }
 
