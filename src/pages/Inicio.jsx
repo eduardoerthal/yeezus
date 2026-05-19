@@ -1,114 +1,103 @@
 import React from "react";
+
 import "../styles/Inicio.css";
+
 import { Navbar } from "../components/Navbar.jsx";
+
 import { Link, useNavigate } from "react-router-dom";
 
 function Inicio() {
+	const navigate = useNavigate();
 
-  const navigate = useNavigate();
+	const token = localStorage.getItem("token");
 
-  const token = localStorage.getItem("token");
+	const handleLogout = () => {
+		localStorage.removeItem("token");
 
-  const handleLogout = () => {
+		navigate("/entrar");
+	};
 
-    localStorage.removeItem("token");
+	return (
+		<>
+			<Navbar />
 
-    navigate("/entrar");
-  };
+			<section className="hero-ye">
+				<div className="hero-ye__container">
+					<div className="hero-ye__content">
+						<div className="hero-ye__header">
+							<span className="hero-ye__badge">
+								PLATAFORMA FINANCEIRA PREMIUM
+							</span>
 
-  return (
-    <>
-      <Navbar />
+							<h1 className="hero-ye__title">Yeezus</h1>
 
-      <section className="hero-ye">
+							<p className="hero-ye__description">
+								Onde sua vida financeira atinge o impossível.
+								Invista, acompanhe e evolua com uma experiência
+								moderna, elegante e criada para quem pensa no
+								longo prazo.
+							</p>
 
-        <div className="hero-ye__container" data-testid="container">
+							<div className="hero-ye__actions">
+								{!token && (
+									<>
+										<Link
+											className="cadastre_aqui"
+											to="/cadastro"
+										>
+											Abra sua Conta
+										</Link>
 
-          <div className="hero-ye__content">
+										<Link
+											className="saiba_mais"
+											to="/entrar"
+										>
+											Entrar
+										</Link>
+									</>
+								)}
 
-            <div className="hero-ye__header">
+								{token && (
+									<>
+										<Link
+											className="cadastre_aqui"
+											to="/sobre"
+										>
+											Explorar Plataforma
+										</Link>
+									</>
+								)}
+							</div>
+						</div>
 
-              <h1 className="hero-ye__title">
-                Yeezus
-              </h1>
+						<div className="hero-ye__footer-links">
+							<Link className="card-link" to="/sobre">
+								<div className="card-link__wrapper">
+									<div className="card-link__text">
+										<strong>CONSULTORIA YE</strong>
 
-              <p className="hero-ye__description">
-                Onde sua vida financeira atinge o impossível
-              </p>
+										<p>
+											Planejamento financeiro exclusivo
+											com visão de longo prazo para quem
+											quer construir patrimônio de
+											verdade.
+										</p>
+									</div>
 
-              <div className="hero-ye__actions">
-
-                {!token && (
-                  <>
-                    <Link
-                      className="cadastre_aqui"
-                      to="/cadastro"
-                    >
-                      Abra sua Conta
-                    </Link>
-
-                    <Link
-                      className="saiba_mais"
-                      to="/entrar"
-                    >
-                      Entrar
-                    </Link>
-                  </>
-                )}
-
-                {token && (
-                  <>
-                    <Link
-                      className="saiba_mais"
-                      to="/sobre"
-                    >
-                      Saiba Mais
-                    </Link>
-                  </>
-                )}
-
-              </div>
-
-            </div>
-
-            <div className="hero-ye__footer-links">
-
-              <a className="card-link">
-
-                <div className="card-link__wrapper">
-
-                  <p className="card-link__text">
-
-                    <strong>
-                      CONSULTORIA YE:
-                    </strong>
-
-                    <p>
-                      Planejamento exclusivo com visão de longo prazo
-                    </p>
-
-                  </p>
-
-                  <button
-                    className="btn--inline"
-                    type="button"
-                  >
-                    Saiba mais
-                  </button>
-
-                </div>
-
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-
-      </section>
-    </>
-  );
+									<button
+										className="btn--inline"
+										type="button"
+									>
+										Saiba mais →
+									</button>
+								</div>
+							</Link>
+						</div>
+					</div>
+				</div>
+			</section>
+		</>
+	);
 }
 
 export default Inicio;

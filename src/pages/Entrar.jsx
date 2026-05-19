@@ -1,125 +1,166 @@
 import React, { useReducer } from "react";
+
 import "../styles/Entrar.css";
+
 import { Navbar } from "../components/Navbar.jsx";
+
+import AppSnackbar from "../components/AppSnackbar.jsx";
+
 import userService from "../api/userService";
+
 import { useNavigate } from "react-router-dom";
 
 function Entrar() {
+	const navigate = useNavigate();
 
-  const navigate = useNavigate();
+	const initialState = {
+		email: "",
 
-  const initialState = {
-    email: "",
-    senha: "",
-  };
+		senha: "",
 
-  function reducer(state, action) {
+		open: false,
 
-    switch (action.type) {
+		message: "",
 
-      case "update":
-        return {
-          ...state,
-          ...action.data,
-        };
+		severity: "success",
 
-      default:
-        return state;
-    }
-  }
+		title: "",
+	};
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+	function reducer(state, action) {
+		switch (action.type) {
+			case "update":
+				return {
+					...state,
+					...action.data,
+				};
 
-  const handleChange = (e) => {
+			case "success":
+				return {
+					...state,
 
-    const { name, value } = e.target;
+					open: true,
 
-    dispatch({
-      type: "update",
-      data: { [name]: value },
-    });
-  };
+					title: "Sucesso",
 
-  const handleSubmit = async (e) => {
+					message: "Login realizado com sucesso!",
 
-    e.preventDefault();
+					severity: "success",
+				};
 
-    if (!state.email || !state.senha) {
-      alert("Preencha todos os campos");
-      return;
-    }
+			case "error":
+				return {
+					...state,
 
-    try {
+					open: true,
 
-      const response = await userService.login({
-        email: state.email,
-        senha: state.senha,
-      });
+					title: "Erro",
 
-      if (response.status === 200) {
+					message: action.message || "Erro ao realizar login",
 
-        localStorage.setItem("token", response.data);
+					severity: "error",
+				};
 
-        alert("Login realizado com sucesso!");
+			default:
+				return state;
+		}
+	}
 
-        dispatch({
-          type: "update",
-          data: {
-            email: "",
-            senha: "",
-          },
-        });
+	const [state, dispatch] = useReducer(reducer, initialState);
 
-        navigate("/");
-      }
+	const handleChange = (e) => {
+		const { name, value } = e.target;
 
-    } catch (error) {
+		dispatch({
+			type: "update",
+			data: {
+				[name]: value,
+			},
+		});
+	};
 
-      if (error.response?.data) {
-        alert(error.response.data);
-      } else {
-        alert("Erro ao realizar login");
-      }
+	const handleCloseSnackbar = () => {
+		dispatch({
+			type: "update",
+			data: {
+				open: false,
+			},
+		});
+	};
 
-      console.error(error);
-    }
-  };
+	const handleSubmit = async (e) => {
+		e.preventDefault();
 
-  return (
-    <>
-      <Navbar />
+		if (!state.email || !state.senha) {
+			dispatch({
+				type: "error",
 
-      <div className="container">
+				message: "Preencha todos os campos",
+			});
 
-        <form className="form" onSubmit={handleSubmit}>
+			return;
+		}
 
-          <h1>Entrar</h1>
+		try {
+			const response = await userService.login({
+				email: state.email,
+				senha: state.senha,
+			});
 
-          <input
-            type="email"
-            name="email"
-            placeholder="E-mail"
-            value={state.email}
-            onChange={handleChange}
-          />
+			if (response.status === 200) {
+				localStorage.setItem("token", response.data);
 
-          <input
-            type="password"
-            name="senha"
-            placeholder="Senha"
-            value={state.senha}
-            onChange={handleChange}
-          />
+				navigate("/");
+			}
+		} catch (error) {
+			dispatch({
+				type: "error",
 
-          <button type="submit">
-            Entrar
-          </button>
+				message: error.response?.data || "Erro interno do servidor",
+			});
 
-        </form>
+			console.error(error);
+		}
+	};
 
-      </div>
-    </>
-  );
+	return (
+		<>
+			<AppSnackbar
+				open={state.open}
+				onClose={handleCloseSnackbar}
+				message={state.message}
+				title={state.title}
+				severity={state.severity}
+				autoClose
+			/>
+
+			<Navbar />
+
+			<div className="container">
+				<form className="form" onSubmit={handleSubmit}>
+					<h1>Entrar</h1>
+
+					<input
+						type="email"
+						name="email"
+						placeholder="E-mail"
+						value={state.email}
+						onChange={handleChange}
+					/>
+
+					<input
+						type="password"
+						name="senha"
+						placeholder="Senha"
+						value={state.senha}
+						onChange={handleChange}
+					/>
+
+					<button type="submit">Entrar</button>
+				</form>
+			</div>
+		</>
+	);
 }
 
 export default Entrar;
