@@ -11,8 +11,6 @@ import Cadastro_resto from "../pages/Cadastro.jsx";
 import ChatPage from "../pages/chat/ChatPage.jsx";
 
 import Sobre from "../pages/Sobre.jsx";
-import Relatorios from "../pages/Relatorios.jsx";
-import Planejamento from "../pages/Planejamento.jsx";
 
 import Planejamento from "../pages/Planejamento.jsx";
 
