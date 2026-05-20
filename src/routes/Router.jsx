@@ -34,9 +34,10 @@ import Relatorios from "../pages/Relatorios.jsx";
 
 // import Fornecedor from "../pages/sobre/Fornecedor.jsx";
 
-import Support from "../pages/Support.jsx";
+// import Support from "../pages/Support.jsx";
 
 import PrivateRoute from "./PrivateRoute.jsx";
+import Acompanhamento from "../pages/Acompanhamento.jsx";
 
 function Router() {
 	return (
@@ -74,14 +75,14 @@ function Router() {
 					}
 				/>
 
-				<Route
+				{/* <Route
 					path="/support"
 					element={
 						<PrivateRoute>
 							<Support />
 						</PrivateRoute>
 					}
-				/>
+				/> */}
 
 				<Route
 					path="/planejamento"
@@ -97,6 +98,14 @@ function Router() {
 					element={
 						<PrivateRoute>
 							<Relatorios />
+						</PrivateRoute>
+					}
+				/>
+                <Route
+					path="/acompanhamento"
+					element={
+						<PrivateRoute>
+							<Acompanhamento />
 						</PrivateRoute>
 					}
 				/>

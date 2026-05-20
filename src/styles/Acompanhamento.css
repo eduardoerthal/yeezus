@@ -1,0 +1,619 @@
+.planejamento {
+	min-height: 100vh;
+
+	padding: 130px 40px 40px;
+
+	background:
+		radial-gradient(
+			circle at top left,
+			rgba(255, 0, 0, 0.08),
+			transparent 25%
+		),
+		radial-gradient(
+			circle at top right,
+			rgba(255, 255, 255, 0.03),
+			transparent 30%
+		),
+		#050505;
+
+	color: white;
+}
+
+.planejamento__container {
+	max-width: 1450px;
+	margin: 0 auto;
+}
+
+.planejamento__header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	gap: 30px;
+
+	margin-bottom: 28px;
+}
+
+.planejamento__title {
+	font-size: 3rem !important;
+
+	font-weight: 800 !important;
+
+	letter-spacing: -2px;
+
+	color: white;
+}
+
+.planejamento__subtitle {
+	color: #8f8f8f;
+
+	font-size: 0.95rem !important;
+
+	margin-top: 10px !important;
+
+	max-width: 500px;
+
+	line-height: 1.6;
+}
+
+.planejamento__total {
+	padding: 20px !important;
+
+	min-width: 270px;
+
+	background: rgba(255, 255, 255, 0.03) !important;
+
+	backdrop-filter: blur(16px);
+
+	border: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+	border-radius: 26px !important;
+
+	display: flex;
+
+	flex-direction: column;
+
+	gap: 8px;
+
+	box-shadow:
+		0 20px 40px rgba(0, 0, 0, 0.35),
+		inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.planejamento__total span {
+	color: #8d8d8d;
+
+	font-size: 0.82rem;
+}
+
+.planejamento__total strong {
+	font-size: 1.9rem;
+
+	font-weight: 800;
+}
+
+.planejamento__topbar {
+	display: flex;
+
+	align-items: center;
+
+	gap: 14px;
+
+	margin-bottom: 20px;
+}
+
+.planejamento__floatingButton {
+	min-width: 56px !important;
+	width: 56px;
+	height: 56px;
+
+	border-radius: 18px !important;
+
+	box-shadow:
+		0 12px 30px rgba(0, 0, 0, 0.25),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+	transition: 0.25s !important;
+}
+
+.planejamento__floatingButton:hover {
+	transform: translateY(-2px);
+
+	box-shadow:
+		0 18px 40px rgba(195, 0, 0, 0.45),
+		inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.planejamento__tabs {
+	width: fit-content;
+	min-width: unset; /* remove o exagero */
+	height: 56px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: rgba(255, 255, 255, 0.03) !important;
+	backdrop-filter: blur(14px);
+
+	border: 1px solid rgba(255, 255, 255, 0.05);
+	border-radius: 22px !important;
+
+	padding: 6px 10px;
+}
+
+.planejamento__filters {
+	display: grid;
+
+	grid-template-columns: 1fr 230px;
+
+	gap: 12px;
+
+	margin-bottom: 20px;
+}
+
+.planejamento__card {
+	background: linear-gradient(
+		180deg,
+		rgba(14, 14, 14, 0.98),
+		rgba(8, 8, 8, 0.98)
+	) !important;
+
+	border: 1px solid rgba(255, 255, 255, 0.05) !important;
+
+	border-radius: 28px !important;
+
+	padding: 14px;
+
+	box-shadow:
+		0 30px 70px rgba(0, 0, 0, 0.45),
+		inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.planejamento__grid {
+	display: grid;
+
+	grid-template-columns: repeat(3, 1fr);
+
+	gap: 10px;
+}
+
+.planejamento__item {
+	position: relative;
+
+	display: flex;
+
+	flex-direction: column;
+
+	justify-content: space-between;
+
+	min-height: 58px;
+
+	padding: 10px 11px;
+
+	border-radius: 18px;
+
+	overflow: hidden;
+
+	transition: 0.22s;
+
+	backdrop-filter: blur(10px);
+}
+
+.planejamento__item::before {
+	content: "";
+
+	position: absolute;
+
+	inset: 0;
+
+	background: radial-gradient(
+		circle at top right,
+		rgba(255, 255, 255, 0.08),
+		transparent 45%
+	);
+
+	pointer-events: none;
+}
+
+.planejamento__item:hover {
+	transform: translateY(-2px) scale(1.01);
+}
+
+.planejamento__item--receitas {
+	background: linear-gradient(
+		180deg,
+		rgba(33, 150, 243, 0.18),
+		rgba(33, 150, 243, 0.06)
+	) !important;
+
+	border: 1px solid rgba(33, 150, 243, 0.16) !important;
+}
+
+.planejamento__item--despesas {
+	background: linear-gradient(
+		180deg,
+		rgba(255, 59, 59, 0.18),
+		rgba(255, 59, 59, 0.06)
+	) !important;
+
+	border: 1px solid rgba(255, 59, 59, 0.16) !important;
+}
+
+.planejamento__item--investimentos {
+	background: linear-gradient(
+		180deg,
+		rgba(255, 193, 7, 0.18),
+		rgba(255, 193, 7, 0.05)
+	) !important;
+
+	border: 1px solid rgba(255, 193, 7, 0.16) !important;
+}
+
+.planejamento__itemInfo {
+	display: flex;
+
+	flex-direction: column;
+
+	gap: 4px;
+}
+
+.planejamento__category {
+	width: fit-content;
+
+	padding: 3px 8px;
+
+	border-radius: 999px;
+
+	background: rgba(0, 0, 0, 0.35);
+
+	border: 1px solid rgba(255, 255, 255, 0.04);
+
+	color: white !important;
+
+	font-size: 0.58rem !important;
+
+	font-weight: 700 !important;
+
+	text-transform: uppercase;
+
+	letter-spacing: 0.4px;
+}
+
+.planejamento__itemInfo strong {
+	font-size: 0.8rem;
+
+	font-weight: 700;
+
+	line-height: 1.2;
+
+	color: white;
+}
+
+.planejamento__itemRight {
+	display: flex;
+
+	align-items: center;
+
+	justify-content: space-between;
+
+	margin-top: 8px;
+}
+
+.planejamento__itemRight strong {
+	font-size: 0.84rem;
+
+	font-weight: 800;
+}
+
+.planejamento__actions {
+	display: flex;
+	gap: 5px;
+}
+
+.MuiIconButton-root {
+	width: 28px;
+
+	height: 28px;
+
+	background: rgba(255, 255, 255, 0.05) !important;
+
+	color: white !important;
+
+	border-radius: 9px !important;
+
+	transition: 0.2s !important;
+}
+
+.MuiIconButton-root:hover {
+	background: rgba(255, 255, 255, 0.09) !important;
+
+	transform: scale(1.04);
+}
+
+.MuiSvgIcon-root {
+	font-size: 0.95rem !important;
+}
+
+.MuiInputBase-root {
+	height: 56px;
+
+	background: rgba(255, 255, 255, 0.04) !important;
+
+	color: white !important;
+
+	border-radius: 16px !important;
+
+	backdrop-filter: blur(10px);
+}
+
+.MuiInputBase-input {
+	padding: 14px !important;
+
+	font-size: 0.92rem !important;
+}
+
+.MuiInputLabel-root {
+	color: #8f8f8f !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+	border: none !important;
+}
+
+.MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+	border: none !important;
+}
+
+.Mui-focused .MuiOutlinedInput-notchedOutline {
+	border: none !important;
+}
+
+.MuiAutocomplete-paper {
+	background: #101010 !important;
+
+	color: white !important;
+
+	border-radius: 16px !important;
+
+	border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.MuiTabs-indicator {
+	display: none;
+}
+
+.MuiTab-root {
+	color: #8d8d8d !important;
+
+	font-weight: 700 !important;
+	text-transform: none !important;
+
+	font-size: 0.92rem !important;
+
+	border-radius: 14px !important;
+
+	min-height: 42px !important;
+	min-width: 110px !important;
+
+	padding: 0 16px !important;
+
+	transition: 0.25s !important;
+}
+
+.Mui-selected {
+	color: white !important;
+}
+
+.MuiDialog-container {
+	backdrop-filter: blur(12px);
+}
+
+.MuiDialog-paper {
+	background: linear-gradient(
+		180deg,
+		rgba(14, 14, 14, 0.98),
+		rgba(8, 8, 8, 0.98)
+	) !important;
+
+	border: 1px solid rgba(255, 255, 255, 0.08) !important;
+
+	border-radius: 28px !important;
+
+	padding: 10px;
+
+	box-shadow:
+		0 40px 90px rgba(0, 0, 0, 0.55),
+		inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+
+.MuiDialogTitle-root {
+	color: white !important;
+
+	font-size: 1.15rem !important;
+
+	font-weight: 700 !important;
+
+	padding-bottom: 4px !important;
+}
+
+.planejamento__modalForm {
+	display: flex;
+
+	flex-direction: column;
+
+	gap: 14px;
+
+	padding-top: 6px;
+}
+
+.planejamento__modalRow {
+	display: grid;
+
+	grid-template-columns: 1fr 1fr;
+
+	gap: 12px;
+}
+
+.planejamento__modalActions {
+	display: flex;
+
+	justify-content: flex-end;
+
+	gap: 10px;
+
+	margin-top: 4px;
+}
+
+.planejamento__modalActions button {
+	height: 44px;
+
+	padding: 0 18px !important;
+
+	border-radius: 14px !important;
+
+	font-weight: 700 !important;
+
+	text-transform: none !important;
+}
+
+@media (max-width: 1100px) {
+	.planejamento__grid {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	.planejamento__header {
+		flex-direction: column;
+
+		align-items: flex-start;
+	}
+
+	.planejamento__total {
+		width: 100%;
+	}
+}
+
+@media (max-width: 800px) {
+	.planejamento__filters {
+		grid-template-columns: 1fr;
+	}
+
+	.planejamento__modalRow {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (max-width: 700px) {
+	.planejamento {
+		padding: 110px 20px 30px;
+	}
+
+	.planejamento__title {
+		font-size: 2.2rem !important;
+	}
+
+	.planejamento__grid {
+		grid-template-columns: 1fr;
+	}
+}
+.planejamento__topbar {
+	display: flex;
+
+	align-items: center;
+
+	justify-content: center;
+
+	gap: 16px;
+
+	margin-bottom: 24px;
+}
+
+.planejamento__floatingButton {
+	min-width: 62px !important;
+
+	width: 62px;
+
+	height: 62px;
+
+	border-radius: 20px !important;
+
+	background: linear-gradient(135deg, #ff3434 0%, #c30000 100%) !important;
+
+	color: white !important;
+
+	box-shadow:
+		0 12px 30px rgba(195, 0, 0, 0.35),
+		inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+	transition: 0.25s !important;
+}
+
+.planejamento__floatingButton svg {
+	font-size: 2.2rem !important;
+
+	stroke-width: 3 !important;
+}
+
+.planejamento__tabs {
+	width: fit-content;
+
+	min-width: 620px;
+
+	height: 74px;
+
+	display: flex;
+
+	align-items: center;
+
+	justify-content: center;
+
+	background: rgba(255, 255, 255, 0.03) !important;
+
+	backdrop-filter: blur(14px);
+
+	border: 1px solid rgba(255, 255, 255, 0.05);
+
+	border-radius: 26px !important;
+
+	padding: 10px 14px;
+}
+
+.MuiTabs-flexContainer {
+	gap: 6px;
+}
+
+.MuiTab-root {
+	color: #8d8d8d !important;
+
+	font-weight: 700 !important;
+
+	text-transform: none !important;
+
+	font-size: 1.02rem !important;
+
+	border-radius: 18px !important;
+
+	min-height: 56px !important;
+
+	min-width: 150px !important;
+
+	padding: 0 30px !important;
+
+	transition: 0.25s !important;
+}
+
+.Mui-selected {
+	color: white !important;
+}
+
+.planejamento__modalActions button:first-child {
+	border: 1px solid rgba(255, 255, 255, 0.14) !important;
+
+	color: white !important;
+
+	background: rgba(255, 255, 255, 0.04) !important;
+}
+
+.planejamento__modalActions button:first-child:hover {
+	background: rgba(255, 255, 255, 0.08) !important;
+}

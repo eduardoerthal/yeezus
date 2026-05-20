@@ -1,62 +1,42 @@
-import {
-	Link,
-	useNavigate,
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./Navbar.css";
 
 import Logo from "../assets/logo.svg";
 
 export function Navbar() {
-
 	const navigate = useNavigate();
 
-	const token =
-		localStorage.getItem("token");
+	const token = localStorage.getItem("token");
 
 	const handleLogout = () => {
-
 		localStorage.removeItem("token");
 
-		navigate("/entrar");
+		navigate("/");
 	};
 
 	return (
-
 		<header className="navbar">
-
 			<div className="logo">
-
 				<Link to="/">
-					<img
-						src={Logo}
-						alt="Yeezus Logo"
-					/>
+					<img src={Logo} alt="Yeezus Logo" />
 				</Link>
-
 			</div>
 
 			<ul className="nav-links">
-
-				<li>
-					<Link to="/">
-						Inicio
-					</Link>
-				</li>
-
 				{token && (
 					<>
-
+						<li>
+							<Link to="/">Inicio</Link>
+						</li>
+                        <li>
+							<Link to="/acompanhamento">Acompanhamento</Link>
+						</li>
 						<li className="menu-item">
-
-							<Link to="/sobre">
-								Sobre
-							</Link>
+							<Link to="/sobre">Sobre</Link>
 
 							<ul className="dropdown">
-
 								<div className="dropdown-column">
-
 									<h4>A Yeezus</h4>
 
 									<li>
@@ -70,17 +50,13 @@ export function Navbar() {
 											História
 										</Link>
 									</li>
-
 								</div>
 
 								<div className="dropdown-column">
-
 									<h4>Nossa atuação</h4>
 
 									<li>
-										<Link to="/sobre/equipe">
-											Equipe
-										</Link>
+										<Link to="/sobre/equipe">Equipe</Link>
 									</li>
 
 									<li>
@@ -88,11 +64,9 @@ export function Navbar() {
 											Compliance
 										</Link>
 									</li>
-
 								</div>
 
 								<div className="dropdown-column">
-
 									<h4>Educação</h4>
 
 									<li>
@@ -106,14 +80,10 @@ export function Navbar() {
 											Encontre um escritório
 										</Link>
 									</li>
-
 								</div>
 
 								<div className="dropdown-column">
-
-									<h4>
-										Trabalhe conosco
-									</h4>
+									<h4>Trabalhe conosco</h4>
 
 									<li>
 										<Link to="/sobre/assessor">
@@ -132,73 +102,48 @@ export function Navbar() {
 											Seja um fornecedor
 										</Link>
 									</li>
-
 								</div>
-
 							</ul>
-
 						</li>
 
-						<li>
+						{/* <li>
 							<Link to="/support">
 								Support
 							</Link>
-						</li>
+						</li> */}
 
 						<li>
-							<Link to="/YeBOT">
-								yeBOT
-							</Link>
+							<Link to="/YeBOT">yeBOT</Link>
 						</li>
-                        <li>
-							<Link to="/planejamento">
-								Planejamento
-							</Link>
+						<li>
+							<Link to="/planejamento">Planejamento</Link>
 						</li>
-                        <li>
-							<Link to="/=relatorios">
-								Relatório
-							</Link>
+						<li>
+							<Link to="/relatorios">Relatório</Link>
 						</li>
-
 					</>
 				)}
-
 			</ul>
 
 			<div className="nav-right">
-
 				{!token && (
 					<>
-
-						<Link
-							className="entrar"
-							to="/entrar"
-						>
+						<Link className="entrar" to="/entrar">
 							Entrar
 						</Link>
 
-						<Link
-							className="cadastrar"
-							to="/cadastro"
-						>
+						<Link className="cadastrar" to="/cadastro">
 							Abra sua Conta
 						</Link>
-
 					</>
 				)}
 
 				{token && (
-					<button
-						className="logout"
-						onClick={handleLogout}
-					>
+					<button className="logout" onClick={handleLogout}>
 						Logout
 					</button>
 				)}
-
 			</div>
-
 		</header>
 	);
 }
