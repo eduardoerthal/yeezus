@@ -1,25 +1,9 @@
 import React, { useReducer } from "react";
 import "../styles/Cadastro.css";
 import Navbar from "../components/Navbar";
-
-function Cadastro_resto(){
-    return(
-      <>
-      <Navbar />
-        <div className="container">
-            
-      <div className="form">
-        <h1>Vamos continuar seu cadastro!</h1>
-        <p>Preencha os campos abaixo</p>
-        <input className="campo" type="text" placeholder="CPF" />
-        <input className="campo" type="email" placeholder="E-mail" />
-        <input className="campo" type="password" placeholder="Senha" />
-        <button className="botao">Cadastrar</button>
-      </div>
-        </div>
-        </>
-    );
 import userService from "../api/userService";
+
+
 
 function Cadastro_resto() {
 
