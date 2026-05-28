@@ -1,4 +1,5 @@
-import React, { useReducer, useState } from "react";
+
+import React, { useEffect, useReducer, useState } from "react";
 
 import {
 	Button,
@@ -12,6 +13,7 @@ import {
 	Dialog,
 	DialogContent,
 	DialogTitle,
+	CircularProgress,
 } from "@mui/material";
 
 import { Add, Delete, Edit, Save } from "@mui/icons-material";
@@ -20,42 +22,11 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import Navbar from "../components/Navbar";
 
+import acompanhamentoService from "../api/acompanhamentoService";
+
 import "../styles/Acompanhamento.css";
 
 const MotionPaper = motion(Paper);
-
-const receitaCategorias = [
-	{ id: 1, name: "Salário" },
-	{ id: 2, name: "Freelance" },
-	{ id: 3, name: "Dividendos" },
-	{ id: 4, name: "Presente" },
-	{ id: 5, name: "Cashback" },
-	{ id: 6, name: "Comissão" },
-	{ id: 7, name: "Aluguel Recebido" },
-	{ id: 8, name: "Venda" },
-];
-
-const despesaCategorias = [
-	{ id: 1, name: "Moradia" },
-	{ id: 2, name: "Lazer" },
-	{ id: 3, name: "Transporte" },
-	{ id: 4, name: "Saúde" },
-	{ id: 5, name: "Mercado" },
-	{ id: 6, name: "Streaming" },
-	{ id: 7, name: "Restaurante" },
-	{ id: 8, name: "Educação" },
-];
-
-const investimentoCategorias = [
-	{ id: 1, name: "Tesouro Direto" },
-	{ id: 2, name: "Ações" },
-	{ id: 3, name: "ETF" },
-	{ id: 4, name: "Crypto" },
-	{ id: 5, name: "CDB" },
-	{ id: 6, name: "LCI/LCA" },
-	{ id: 7, name: "Fundos" },
-	{ id: 8, name: "Reserva de Emergência" },
-];
 
 const initialState = {
 	tab: 0,
@@ -63,6 +34,8 @@ const initialState = {
 	receitas: [],
 	despesas: [],
 	investimentos: [],
+
+	categorias: [],
 
 	form: {
 		title: "",
@@ -101,7 +74,13 @@ function reducer(state, action) {
 		case "SET_TAB":
 			return {
 				...state,
+
 				tab: action.payload,
+
+				filters: {
+					search: "",
+					category: null,
+				},
 
 				form: {
 					title: "",
@@ -109,17 +88,19 @@ function reducer(state, action) {
 					category: null,
 				},
 
-				filters: {
-					search: "",
-					category: null,
-				},
-
 				editingId: null,
+			};
+
+		case "SET_DATA":
+			return {
+				...state,
+				[action.key]: action.payload,
 			};
 
 		case "UPDATE_FORM":
 			return {
 				...state,
+
 				form: {
 					...state.form,
 					...action.payload,
@@ -129,32 +110,11 @@ function reducer(state, action) {
 		case "UPDATE_FILTERS":
 			return {
 				...state,
+
 				filters: {
 					...state.filters,
 					...action.payload,
 				},
-			};
-
-		case "ADD_ITEM":
-			return {
-				...state,
-
-				[action.section]: [...state[action.section], action.payload],
-
-				form: {
-					title: "",
-					value: "",
-					category: null,
-				},
-			};
-
-		case "DELETE_ITEM":
-			return {
-				...state,
-
-				[action.section]: state[action.section].filter(
-					(item) => item.id !== action.id,
-				),
 			};
 
 		case "START_EDIT":
@@ -164,26 +124,9 @@ function reducer(state, action) {
 				editingId: action.item.id,
 
 				form: {
-					title: action.item.title,
-					value: formatCurrency(action.item.value.toString()),
-					category: action.item.category,
-				},
-			};
-
-		case "SAVE_EDIT":
-			return {
-				...state,
-
-				[action.section]: state[action.section].map((item) =>
-					item.id === action.id ? action.payload : item,
-				),
-
-				editingId: null,
-
-				form: {
-					title: "",
-					value: "",
-					category: null,
+					title: action.item.titulo,
+					value: formatCurrency(action.item.valor.toString()),
+					category: action.item.categoria,
 				},
 			};
 
@@ -208,6 +151,8 @@ function reducer(state, action) {
 function Acompanhamento() {
 	const [state, dispatch] = useReducer(reducer, initialState);
 
+	const [loading, setLoading] = useState(false);
+
 	const [openModal, setOpenModal] = useState(false);
 
 	const tabs = [
@@ -215,78 +160,156 @@ function Acompanhamento() {
 			label: "Receita",
 			color: "#2196f3",
 			key: "receitas",
-			categories: receitaCategorias,
+			api: "receita",
+			tipo: "RECEITA",
 		},
 
 		{
 			label: "Despesa",
 			color: "#ff3b3b",
 			key: "despesas",
-			categories: despesaCategorias,
+			api: "despesa",
+			tipo: "DESPESA",
 		},
 
 		{
 			label: "Investido",
 			color: "#ffc107",
 			key: "investimentos",
-			categories: investimentoCategorias,
+			api: "investimento",
+			tipo: "INVESTIMENTO",
 		},
 	];
 
 	const currentTab = tabs[state.tab];
 
+	const currentCategories = state.categorias.filter(
+		(category) => category.tipo === currentTab.tipo,
+	);
+
+	const loadData = async () => {
+		try {
+			setLoading(true);
+
+			const [
+				receitas,
+				despesas,
+				investimentos,
+				categorias,
+			] = await Promise.all([
+				acompanhamentoService.getReceitas(),
+				acompanhamentoService.getDespesas(),
+				acompanhamentoService.getInvestimentos(),
+				acompanhamentoService.getCategorias(),
+			]);
+
+			dispatch({
+				type: "SET_DATA",
+				key: "receitas",
+				payload: receitas.data,
+			});
+
+			dispatch({
+				type: "SET_DATA",
+				key: "despesas",
+				payload: despesas.data,
+			});
+
+			dispatch({
+				type: "SET_DATA",
+				key: "investimentos",
+				payload: investimentos.data,
+			});
+
+			dispatch({
+				type: "SET_DATA",
+				key: "categorias",
+				payload: categorias.data,
+			});
+		} catch (error) {
+			console.error(error);
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
+		loadData();
+	}, []);
+
 	const total = state[currentTab.key].reduce(
-		(acc, item) => acc + item.value,
+		(acc, item) => acc + item.valor,
 		0,
 	);
 
 	const filteredItems = state[currentTab.key].filter((item) => {
 		const search = state.filters.search.toLowerCase();
 
-		const matchesSearch = item.title.toLowerCase().includes(search);
+		const matchesSearch = item.titulo
+			.toLowerCase()
+			.includes(search);
 
 		const matchesCategory =
 			!state.filters.category ||
-			item.category.id === state.filters.category.id;
+			item.categoria.id === state.filters.category.id;
 
 		return matchesSearch && matchesCategory;
 	});
 
-	const handleSubmit = () => {
-		if (!state.form.title || !state.form.value || !state.form.category) {
-			return;
-		}
+	const handleSubmit = async () => {
+		try {
+			if (
+				!state.form.title ||
+				!state.form.value ||
+				!state.form.category
+			) {
+				return;
+			}
 
-		const item = {
-			id: state.editingId || Date.now(),
+			const payload = {
+				titulo: state.form.title,
 
-			title: state.form.title,
+				valor: parseCurrency(state.form.value),
 
-			value: parseCurrency(state.form.value),
+				categoriaId: state.form.category.id,
+			};
 
-			category: state.form.category,
-		};
+			if (state.editingId) {
+				await acompanhamentoService.update(
+					currentTab.api,
+					state.editingId,
+					payload,
+				);
+			} else {
+				await acompanhamentoService.create(
+					currentTab.api,
+					payload,
+				);
+			}
 
-		if (state.editingId) {
 			dispatch({
-				type: "SAVE_EDIT",
-				section: currentTab.key,
-				id: state.editingId,
-				payload: item,
+				type: "CANCEL_EDIT",
 			});
 
 			setOpenModal(false);
 
-			return;
+			await loadData();
+		} catch (error) {
+			console.error(error);
 		}
+	};
 
-		dispatch({
-			type: "ADD_ITEM",
-			section: currentTab.key,
-			payload: item,
-		});
+	const handleDelete = async (id) => {
+		try {
+			await acompanhamentoService.delete(
+				currentTab.api,
+				id,
+			);
 
-		setOpenModal(false);
+			await loadData();
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	const openEditModal = (item) => {
@@ -394,8 +417,8 @@ function Acompanhamento() {
 						/>
 
 						<Autocomplete
-							options={currentTab.categories}
-							getOptionLabel={(option) => option.name}
+							options={currentCategories}
+							getOptionLabel={(option) => option.nome}
 							value={state.filters.category}
 							onChange={(_, value) =>
 								dispatch({
@@ -416,74 +439,81 @@ function Acompanhamento() {
 
 					<MotionPaper layout className="planejamento__card">
 						<div className="planejamento__grid">
-							<AnimatePresence>
-								{filteredItems.map((item) => (
-									<motion.div
-										layout
-										key={item.id}
-										className={`planejamento__item planejamento__item--${currentTab.key}`}
-										initial={{
-											opacity: 0,
-											y: 10,
-										}}
-										animate={{
-											opacity: 1,
-											y: 0,
-										}}
-										exit={{
-											opacity: 0,
-											scale: 0.95,
-										}}
-									>
-										<div className="planejamento__itemInfo">
-											<span className="planejamento__category">
-												{item.category.name}
-											</span>
+							{loading ? (
+								<div className="planejamento__loading">
+									<CircularProgress />
+								</div>
+							) : (
+								<AnimatePresence>
+									{filteredItems.map((item) => (
+										<motion.div
+											layout
+											key={item.id}
+											className={`planejamento__item planejamento__item--${currentTab.key}`}
+											initial={{
+												opacity: 0,
+												y: 10,
+											}}
+											animate={{
+												opacity: 1,
+												y: 0,
+											}}
+											exit={{
+												opacity: 0,
+												scale: 0.95,
+											}}
+										>
+											<div className="planejamento__itemInfo">
+												<span className="planejamento__category">
+													{item.categoria.nome}
+												</span>
 
-											<strong>{item.title}</strong>
-										</div>
-
-										<div className="planejamento__itemRight">
-											<strong
-												style={{
-													color: currentTab.color,
-												}}
-											>
-												{item.value.toLocaleString(
-													"pt-BR",
-													{
-														style: "currency",
-														currency: "BRL",
-													},
-												)}
-											</strong>
-
-											<div className="planejamento__actions">
-												<IconButton
-													onClick={() =>
-														openEditModal(item)
-													}
-												>
-													<Edit fontSize="small" />
-												</IconButton>
-
-												<IconButton
-													onClick={() =>
-														dispatch({
-															type: "DELETE_ITEM",
-															section:
-																currentTab.key,
-															id: item.id,
-														})
-													}
-												>
-													<Delete fontSize="small" />
-												</IconButton>
+												<strong>
+													{item.titulo}
+												</strong>
 											</div>
-										</div>
-									</motion.div>
-								))}
-							</AnimatePresence>
+
+											<div className="planejamento__itemRight">
+												<strong
+													style={{
+														color: currentTab.color,
+													}}
+												>
+													{item.valor.toLocaleString(
+														"pt-BR",
+														{
+															style: "currency",
+															currency: "BRL",
+														},
+													)}
+												</strong>
+
+												<div className="planejamento__actions">
+													<IconButton
+														onClick={() =>
+															openEditModal(
+																item,
+															)
+														}
+													>
+														<Edit fontSize="small" />
+													</IconButton>
+
+													<IconButton
+														onClick={() =>
+															handleDelete(
+																item.id,
+															)
+														}
+													>
+														<Delete fontSize="small" />
+													</IconButton>
+												</div>
+											</div>
+										</motion.div>
+									))}
+								</AnimatePresence>
+							)}
 						</div>
 					</MotionPaper>
 				</div>
@@ -519,8 +549,8 @@ function Acompanhamento() {
 							/>
 
 							<Autocomplete
-								options={currentTab.categories}
-								getOptionLabel={(option) => option.name}
+								options={currentCategories}
+								getOptionLabel={(option) => option.nome}
 								value={state.form.category}
 								onChange={(_, value) =>
 									dispatch({
@@ -531,7 +561,10 @@ function Acompanhamento() {
 									})
 								}
 								renderInput={(params) => (
-									<TextField {...params} label="Categoria" />
+									<TextField
+										{...params}
+										label="Categoria"
+									/>
 								)}
 							/>
 						</div>
@@ -543,7 +576,9 @@ function Acompanhamento() {
 								dispatch({
 									type: "UPDATE_FORM",
 									payload: {
-										value: formatCurrency(e.target.value),
+										value: formatCurrency(
+											e.target.value,
+										),
 									},
 								})
 							}
@@ -566,13 +601,17 @@ function Acompanhamento() {
 
 							<Button
 								onClick={handleSubmit}
-								startIcon={state.editingId ? <Save /> : <Add />}
+								startIcon={
+									state.editingId ? <Save /> : <Add />
+								}
 								sx={{
 									background: currentTab.color,
 									color: "#fff",
 								}}
 							>
-								{state.editingId ? "Salvar" : "Adicionar"}
+								{state.editingId
+									? "Salvar"
+									: "Adicionar"}
 							</Button>
 						</div>
 					</div>
