@@ -16,7 +16,6 @@ export function Navbar() {
 		navigate("/");
         window.location.reload();
 	};
-
 	return (
 		<header className="navbar">
 			<div className="logo">
