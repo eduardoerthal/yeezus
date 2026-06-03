@@ -16,55 +16,39 @@ import Planejamento from "../pages/Planejamento.jsx";
 
 import Relatorios from "../pages/Relatorios.jsx";
 
-// import Empresa from "../pages/sobre/Empresa.jsx";
+import Simulador_invest from "../pages/Simulador_invest.jsx";
 
-// import Historia from "../pages/sobre/Historia.jsx";
-
-// import Equipe from "../pages/sobre/Equipe.jsx";
-
-// import Compliance from "../pages/sobre/Compliance.jsx";
-
-// import Educacao from "../pages/sobre/Educacao.jsx";
-
-// import Escritorio from "../pages/sobre/Escritorio.jsx";
-
-// import Assessor from "../pages/sobre/Assessor.jsx";
-
-// import Consultor from "../pages/sobre/Consultor.jsx";
-
-// import Fornecedor from "../pages/sobre/Fornecedor.jsx";
-
-// import Support from "../pages/Support.jsx";
+import Simulador_resultado from "../pages/Simulador_resultado.jsx";
 
 import PrivateRoute from "./PrivateRoute.jsx";
 import Acompanhamento from "../pages/Acompanhamento.jsx";
+import Simulador_perfil from "../pages/Simulador_perfil.jsx";
 
 function Router() {
-	return (
-		<BrowserRouter>
-			<Routes>
-				{/* PÚBLICAS */}
+  return (
+    <BrowserRouter>
 
-				<Route path="/" element={<Inicio />} />
+		<Routes>
+			{/* Públicas */}
+			<Route path="/" element={<Inicio />} />
+			<Route path="/entrar" element={<Entrar />} />
+			<Route path="/cadastro" element={<Cadastro />} />
+			<Route path="/cadastro_resto" element={<Cadastro_resto />} />
 
-				<Route path="/entrar" element={<Entrar />} />
+			<Route path="simulador_invest" element={<Simulador_invest />} />
 
-				<Route path="/cadastro" element={<Cadastro />} />
+			<Route path="simulador_perfil" element={<Simulador_perfil />} />
 
-				<Route path="/cadastro_resto" element={<Cadastro_resto />} />
-
-				<Route path="/cadastre_aqui" element={<Cadastro />} />
-
-				{/* PRIVADAS */}
-
-				<Route
-					path="/YeBOT"
-					element={
-						<PrivateRoute>
-							<ChatPage />
-						</PrivateRoute>
-					}
-				/>
+			<Route path="/simulador_resultado" element={<Simulador_resultado />} />
+			{/* Privadas */}
+			<Route
+				path="/YeBOT"
+				element={
+					<PrivateRoute>
+						<ChatPage />
+					</PrivateRoute>
+				}
+			/>
 
 				<Route
 					path="/sobre"
@@ -74,16 +58,14 @@ function Router() {
 						</PrivateRoute>
 					}
 				/>
-
-				{/* <Route
-					path="/support"
-					element={
-						<PrivateRoute>
-							<Support />
-						</PrivateRoute>
-					}
-				/> */}
-
+			<Route
+				path="/acompanhamento"
+				element={
+					<PrivateRoute>
+						<Acompanhamento />
+					</PrivateRoute>
+				}
+			/>
 				<Route
 					path="/planejamento"
 					element={
@@ -101,100 +83,9 @@ function Router() {
 						</PrivateRoute>
 					}
 				/>
-                <Route
-					path="/acompanhamento"
-					element={
-						<PrivateRoute>
-							<Acompanhamento />
-						</PrivateRoute>
-					}
-				/>
-
-				{/* SUBPÁGINAS SOBRE */}
-
-				{/* <Route
-					path="/sobre/empresa"
-					element={
-						<PrivateRoute>
-							<Empresa />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/historia"
-					element={
-						<PrivateRoute>
-							<Historia />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/equipe"
-					element={
-						<PrivateRoute>
-							<Equipe />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/compliance"
-					element={
-						<PrivateRoute>
-							<Compliance />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/educacao"
-					element={
-						<PrivateRoute>
-							<Educacao />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/escritorio"
-					element={
-						<PrivateRoute>
-							<Escritorio />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/assessor"
-					element={
-						<PrivateRoute>
-							<Assessor />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/consultor"
-					element={
-						<PrivateRoute>
-							<Consultor />
-						</PrivateRoute>
-					}
-				/>
-
-				<Route
-					path="/sobre/fornecedor"
-					element={
-						<PrivateRoute>
-							<Fornecedor />
-						</PrivateRoute>
-					}
-				/> */}
 			</Routes>
 		</BrowserRouter>
-	);
+					);
 }
 
 export default Router;
