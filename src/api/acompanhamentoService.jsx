@@ -6,8 +6,8 @@ const acompanhamentoService = {
 	// RECEITAS
 	// =========================
 
-	getReceitas: async () => {
-		return await api.get("/api/receita");
+	getReceitas: async (userId) => {
+		return await api.get(`/api/receita?userId=${userId}`);
 	},
 
 	createReceita: async (data) => {
@@ -26,8 +26,8 @@ const acompanhamentoService = {
 	// DESPESAS
 	// =========================
 
-	getDespesas: async () => {
-		return await api.get("/api/despesa");
+	getDespesas: async (userId) => {
+		return await api.get(`/api/despesa?userId=${userId}`);
 	},
 
 	createDespesa: async (data) => {
@@ -46,8 +46,8 @@ const acompanhamentoService = {
 	// INVESTIMENTOS
 	// =========================
 
-	getInvestimentos: async () => {
-		return await api.get("/api/investimento");
+	getInvestimentos: async (userId) => {
+		return await api.get(`/api/investimento?userId=${userId}`);
 	},
 
 	createInvestimento: async (data) => {
@@ -88,7 +88,7 @@ const acompanhamentoService = {
 				return await acompanhamentoService.createInvestimento(data);
 
 			default:
-				break;
+				throw new Error(`Tipo inválido: ${type}`);
 		}
 	},
 
@@ -106,7 +106,7 @@ const acompanhamentoService = {
 				return await acompanhamentoService.updateInvestimento(id, data);
 
 			default:
-				break;
+				throw new Error(`Tipo inválido: ${type}`);
 		}
 	},
 
@@ -124,7 +124,7 @@ const acompanhamentoService = {
 				return await acompanhamentoService.deleteInvestimento(id);
 
 			default:
-				break;
+				throw new Error(`Tipo inválido: ${type}`);
 		}
 	}
 

@@ -108,9 +108,11 @@ function Entrar() {
 			});
 
 			if (response.status === 200) {
-				localStorage.setItem("token", response.data);
-
+                console.log(response)
+				localStorage.setItem("token", response.data.token);
+                localStorage.setItem("userId", response.data.userId);
 				navigate("/");
+                window.location.reload();
 			}
 		} catch (error) {
 			dispatch({

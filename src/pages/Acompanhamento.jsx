@@ -30,7 +30,8 @@ const MotionPaper = motion(Paper);
 
 const initialState = {
 	tab: 0,
-
+    userId: Number(localStorage.getItem("userId")),
+    periodo: "mes",
 	receitas: [],
 	despesas: [],
 	investimentos: [],
@@ -142,7 +143,8 @@ function reducer(state, action) {
 					category: null,
 				},
 			};
-
+        case "SET_PERIODO":
+            return { ...state, periodo: action.payload };
 		default:
 			return state;
 	}
@@ -192,16 +194,16 @@ function Acompanhamento() {
 			setLoading(true);
 
 			const [
-				receitas,
-				despesas,
-				investimentos,
-				categorias,
-			] = await Promise.all([
-				acompanhamentoService.getReceitas(),
-				acompanhamentoService.getDespesas(),
-				acompanhamentoService.getInvestimentos(),
-				acompanhamentoService.getCategorias(),
-			]);
+                receitas,
+                despesas,
+                investimentos,
+                categorias,
+            ] = await Promise.all([
+                acompanhamentoService.getReceitas(state.userId),
+                acompanhamentoService.getDespesas(state.userId),
+                acompanhamentoService.getInvestimentos(state.userId),
+                acompanhamentoService.getCategorias(),
+            ]);
 
 			dispatch({
 				type: "SET_DATA",
@@ -243,18 +245,37 @@ function Acompanhamento() {
 	);
 
 	const filteredItems = state[currentTab.key].filter((item) => {
-		const search = state.filters.search.toLowerCase();
+        const search = state.filters.search.toLowerCase();
+        const matchesSearch = item.titulo.toLowerCase().includes(search);
+        const matchesCategory = !state.filters.category || item.categoria.id === state.filters.category.id;
 
-		const matchesSearch = item.titulo
-			.toLowerCase()
-			.includes(search);
+        // Lógica do Filtro de Data
+        let matchesDate = true;
+        if (item.dataCriacao) {
+            const itemDate = new Date(item.dataCriacao);
+            const now = new Date();
 
-		const matchesCategory =
-			!state.filters.category ||
-			item.categoria.id === state.filters.category.id;
+            if (state.periodo === "mes") {
+                matchesDate =
+                    itemDate.getMonth() === now.getMonth() &&
+                    itemDate.getFullYear() === now.getFullYear();
+            }
+            else if (state.periodo === "trimestre") {
+                const currentQuarter = Math.floor(now.getMonth() / 3);
+                const itemQuarter = Math.floor(itemDate.getMonth() / 3);
 
-		return matchesSearch && matchesCategory;
-	});
+                matchesDate =
+                    itemQuarter === currentQuarter &&
+                    itemDate.getFullYear() === now.getFullYear();
+            }
+            else if (state.periodo === "ano") {
+                matchesDate =
+                    itemDate.getFullYear() === now.getFullYear();
+            }
+        }
+
+        return matchesSearch && matchesCategory && matchesDate;
+    });
 
 	const handleSubmit = async () => {
 		try {
@@ -270,6 +291,8 @@ function Acompanhamento() {
 				titulo: state.form.title,
 
 				valor: parseCurrency(state.form.value),
+                
+                userId: state.userId,
 
 				categoriaId: state.form.category.id,
 			};
@@ -400,7 +423,33 @@ function Acompanhamento() {
 							</Tabs>
 						</Paper>
 					</div>
-
+                    <Paper
+                        className="planejamento__periodos"
+                        elevation={0}
+                    >
+                        {[
+                            { value: "mes", label: "Mensal" },
+                            { value: "trimestre", label: "Trimestral" },
+                            { value: "ano", label: "Anual" },
+                        ].map((periodo) => (
+                            <Button
+                                key={periodo.value}
+                                onClick={() =>
+                                    dispatch({
+                                        type: "SET_PERIODO",
+                                        payload: periodo.value,
+                                    })
+                                }
+                                className={
+                                    state.periodo === periodo.value
+                                        ? "planejamento__periodoBtn planejamento__periodoBtn--active"
+                                        : "planejamento__periodoBtn"
+                                }
+                            >
+                                {periodo.label}
+                            </Button>
+                        ))}
+                    </Paper>
 					<div className="planejamento__filters">
 						<TextField
 							placeholder="Pesquisar por nome..."

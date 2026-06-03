@@ -11,8 +11,10 @@ export function Navbar() {
 
 	const handleLogout = () => {
 		localStorage.removeItem("token");
+		localStorage.removeItem("userId");
 
 		navigate("/");
+        window.location.reload();
 	};
 
 	return (
