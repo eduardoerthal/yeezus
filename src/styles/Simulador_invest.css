@@ -1,0 +1,225 @@
+.simulador{
+	min-height:100vh;
+
+	padding:140px 8% 80px;
+
+	background:#080808;
+
+	display:flex;
+
+	justify-content:center;
+}
+
+.simulador__container{
+	width:100%;
+
+	max-width:900px;
+}
+
+.simulador__steps{
+	display:flex;
+
+	align-items:center;
+
+	justify-content:center;
+
+	margin-bottom:60px;
+}
+
+.step{
+	display:flex;
+
+	flex-direction:column;
+
+	align-items:center;
+
+	gap:10px;
+}
+
+.step span{
+	width:50px;
+	height:50px;
+
+	border-radius:50%;
+
+	display:flex;
+	align-items:center;
+	justify-content:center;
+
+	background:#181818;
+
+	border:1px solid rgba(255,255,255,0.08);
+
+	color:white;
+
+	font-weight:700;
+}
+
+.step p{
+	color:#8f8f8f;
+
+	font-size:.9rem;
+
+	margin:0;
+}
+
+.step--active span{
+	background:
+		linear-gradient(
+			135deg,
+			#9a0000,
+			#d10000
+		);
+
+	border:none;
+}
+
+.step--active p{
+	color:white;
+}
+
+.step__line{
+	width:120px;
+
+	height:2px;
+
+	background:
+		rgba(255,255,255,0.08);
+
+	margin:0 10px;
+}
+
+.simulador__card{
+	background:
+		linear-gradient(
+			180deg,
+			rgba(18,18,18,1) 0%,
+			rgba(12,12,12,1) 100%
+		);
+
+	border:
+		1px solid rgba(154,0,0,0.25);
+
+	border-radius:28px;
+
+	padding:50px;
+
+	box-shadow:
+		0 15px 40px rgba(0,0,0,0.45);
+}
+
+.simulador__tag{
+	color:#ff3c3c;
+
+	font-size:.9rem;
+
+	font-weight:700;
+
+	letter-spacing:2px;
+}
+
+.simulador__card h1{
+	color:white;
+
+	font-size:2.8rem;
+
+	margin:20px 0;
+}
+
+.simulador__card p{
+	color:#b6b6b6;
+
+	line-height:1.8;
+
+	margin-bottom:40px;
+}
+
+.simulador__form{
+	display:flex;
+
+	flex-direction:column;
+
+	gap:20px;
+}
+
+.simulador__form input{
+	height:58px;
+
+	background:#111;
+
+	border:1px solid rgba(255,255,255,0.08);
+
+	border-radius:16px;
+
+	padding:0 20px;
+
+	color:white;
+
+	font-size:1rem;
+}
+
+.simulador__form input:focus{
+	outline:none;
+
+	border-color:#9a0000;
+}
+
+.simulador__form button{
+	height:58px;
+
+	border:none;
+
+	border-radius:16px;
+
+	font-weight:700;
+
+	cursor:pointer;
+
+	color:white;
+
+	background:
+		linear-gradient(
+			135deg,
+			#9a0000,
+			#d10000
+		);
+}
+.continuar {
+    width:100%;
+
+	max-width:860px;
+
+	height:58px;
+
+	margin:20px auto 0;
+
+	display:flex;
+	align-items:center;
+	justify-content:center;
+
+	text-decoration:none;
+
+	border:none;
+
+	border-radius:16px;
+
+	font-size:1rem;
+
+	font-weight:700;
+
+	cursor:pointer;
+
+	color:white;
+
+	background:
+		linear-gradient(
+			135deg,
+			#9a0000,
+			#d10000
+		);
+
+	box-shadow:
+		0 10px 30px rgba(154,0,0,.3);
+
+	transition:.25s;
+}
