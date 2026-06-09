@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useReducer } from "react";
 import "../styles/Simulador_resultado.css";
 import { Navbar } from "../components/Navbar";
-import { Link } from "react-router-dom";
+import emailService from "../api/emailService";
+import AppSnackbar from "../components/AppSnackbar";
 
+// ===================== FORMATADORES =====================
 function formatCPF(value) {
 	return value
 		.replace(/\D/g, "")
@@ -14,62 +16,96 @@ function formatCPF(value) {
 
 function formatTel(value) {
 	const digits = value.replace(/\D/g, "").slice(0, 11);
+
 	if (digits.length <= 10) {
 		return digits.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
 	}
 	return digits.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
 }
 
+// ===================== REDUCER =====================
+const initialState = {
+	nome: "",
+	email: "",
+	cpf: "",
+	telefone: "",
+	aceito: false,
+	title: "",
+	message: "",
+	severity: "",
+	open: false,
+};
+
+function reducer(state, action) {
+	switch (action.type) {
+		case "SET_FIELD":
+			return { ...state, [action.field]: action.value };
+		case "TOGGLE_ACEITO":
+			return { ...state, aceito: !state.aceito };
+		case "OPEN_SNACKBAR":
+			return { ...state, open: true };
+		case "CLOSE_SNACKBAR":
+			return { ...state, open: false };
+		case "SUCCESS":
+			return {...state, title: "Sucesso", message: "Email enviado!", severity: "success"}
+		case "ERROR":
+			return {...state, title: "Erro", message: "Erro ao salvar", severity: "error"}
+		case "RESET":
+			return initialState;
+
+		default:
+			return state;
+	}
+}
+
+// ===================== COMPONENTE =====================
 function Simulador_resultado() {
-	const [nome, setNome] = useState("");
-	const [email, setEmail] = useState("");
-	const [cpf, setCpf] = useState("");
-	const [telefone, setTelefone] = useState("");
-	const [aceito, setAceito] = useState(false);
+	const [state, dispatch] = useReducer(reducer, initialState);
+
+	const { nome, email, cpf, telefone, aceito, open } = state;
 
 	const isValid =
-		nome.trim() && email.trim() && cpf.trim() && telefone.trim() && aceito;
+		nome.trim() &&
+		email.trim() &&
+		cpf.trim() &&
+		telefone.trim() &&
+		aceito;
 
-	function handleCPF(e) {
-		setCpf(formatCPF(e.target.value));
-	}
+	function handleSubmit() {
 
-	function handleTel(e) {
-		setTelefone(formatTel(e.target.value));
+		const request = {...state}
+
+		emailService
+			.sendEmail(request)
+			.then(() => {
+				dispatch({ type: "SUCCESS" });
+				dispatch({ type: "OPEN_SNACKBAR" });
+				dispatch({ type: "RESET" });
+			})
+			.catch(() => {
+				dispatch({ type: "ERROR" });
+				dispatch({ type: "OPEN_SNACKBAR" });
+			});
 	}
 
 	return (
 		<>
+			<AppSnackbar
+				open={open}
+				onClose={() => dispatch({ type: "CLOSE_SNACKBAR" })}
+				message={state.message}
+				title={state.title}
+				severity={state.severity}
+				autoClose
+			/>
+
 			<Navbar />
 
 			<section className="dados">
 				<div className="dados__overlay">
 					<div className="dados__container">
 
-						<div className="dados__steps">
-							<div className="dados-step dados-step--done">
-								<span>1</span>
-								<p>Objetivo</p>
-							</div>
-
-							<div className="dados-step__line dados-step__line--active" />
-
-							<div className="dados-step dados-step--done">
-								<span>2</span>
-								<p>Perfil</p>
-							</div>
-
-							<div className="dados-step__line dados-step__line--active" />
-
-							<div className="dados-step dados-step--active">
-								<span>3</span>
-								<p>Resultado</p>
-							</div>
-						</div>
-
-						<h1>
-							Já estamos analisando suas informações!
-						</h1>
+						<h1>Já estamos analisando suas informações!</h1>
 
 						<p className="dados__description">
 							Para visualizar o resultado da sua simulação,
@@ -77,50 +113,72 @@ function Simulador_resultado() {
 						</p>
 
 						<div className="dados__form">
+
 							<input
-								className="dados__field"
 								type="text"
 								placeholder="Nome"
 								value={nome}
-								onChange={(e) => setNome(e.target.value)}
+								onChange={(e) =>
+									dispatch({
+										type: "SET_FIELD",
+										field: "nome",
+										value: e.target.value,
+									})
+								}
 							/>
 
 							<input
-								className="dados__field"
 								type="email"
-								placeholder="E-mail de contato"
+								placeholder="Email"
 								value={email}
-								onChange={(e) => setEmail(e.target.value)}
+								onChange={(e) =>
+									dispatch({
+										type: "SET_FIELD",
+										field: "email",
+										value: e.target.value,
+									})
+								}
 							/>
 
 							<input
-								className="dados__field"
 								type="text"
-								placeholder="CPF para personalizar sua experiência"
+								placeholder="CPF"
 								value={cpf}
-								onChange={handleCPF}
-								maxLength={14}
+								onChange={(e) =>
+									dispatch({
+										type: "SET_FIELD",
+										field: "cpf",
+										value: formatCPF(e.target.value),
+									})
+								}
 							/>
 
 							<input
-								className="dados__field"
 								type="tel"
-								placeholder="Número do seu celular com DDD"
+								placeholder="Telefone"
 								value={telefone}
-								onChange={handleTel}
-								maxLength={15}
+								onChange={(e) =>
+									dispatch({
+										type: "SET_FIELD",
+										field: "telefone",
+										value: formatTel(e.target.value),
+									})
+								}
 							/>
 
 							<div className="dados__check-row">
 								<button
 									type="button"
-									className={`dados__check-box ${aceito ? "dados__check-box--checked" : ""}`}
-									onClick={() => setAceito(!aceito)}
-									aria-checked={aceito}
-									role="checkbox"
+									className={`dados__check-box ${
+										aceito ? "dados__check-box--checked" : ""
+									}`}
+									onClick={() =>
+										dispatch({ type: "TOGGLE_ACEITO" })
+									}
 								/>
+
 								<span className="dados__check-label">
-									Ao aceitar, você autoriza a XP a coletar seus dados
+									Ao aceitar, você autoriza a YEEZUS a coletar seus dados
 									pessoais de acordo com a nossa{" "}
 									<a href="/politica-de-privacidade" className="dados__check-link">
 										Política de Privacidade.
@@ -128,21 +186,16 @@ function Simulador_resultado() {
 								</span>
 							</div>
 
-							{isValid ? (
-								<Link to="/Simulador_resultado" className="resultado">
-									Ver Resultado
-								</Link>
-							) : (
-								<button
-									type="button"
-									className="resultado resultado--disabled"
-									disabled
-								>
-									Ver Resultado
-								</button>
-							)}
-						</div>
+							<button
+								type="button"
+								className="resultado"
+								onClick={handleSubmit}
+								disabled={!isValid}
+							>
+								Ver Resultado
+							</button>
 
+						</div>
 					</div>
 				</div>
 			</section>

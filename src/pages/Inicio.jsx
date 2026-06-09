@@ -20,16 +20,6 @@ function Inicio() {
 			<section className="hero-ye">
 				<div className="hero-ye__container" data-testid="container">
 					<div className="hero-ye__content">
-						<div className="hero-ye__header">
-							{token && (
-								<button
-									className="saiba_mais"
-									onClick={handleLogout}
-								>
-									Sair
-								</button>
-							)}
-						</div>
 
 						<h1 className="hero-ye__title">Yeezus</h1>
 
