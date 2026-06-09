@@ -38,38 +38,183 @@ export default function ChatPage() {
   // Busca os dados do banco assim que o chat abre
   useEffect(() => {
     async function carregarDadosDoBanco() {
-      try {
-        const userId = Number(localStorage.getItem("userId"));
-        if (!userId) return;
+  try {
+    const userId = Number(localStorage.getItem("userId"));
 
-        // Puxa as informações através do seu acompanhamentoService
-        const [resReceitas, resDespesas, resInvest] = await Promise.all([
-          acompanhamentoService.getReceitas(userId),
-          acompanhamentoService.getDespesas(userId),
-          acompanhamentoService.getInvestimentos(userId)
-        ]);
+    if (!userId) return;
 
-        const totalReceitas = resReceitas.data.reduce((acc, curr) => acc + curr.valor, 0);
-        const totalDespesas = resDespesas.data.reduce((acc, curr) => acc + curr.valor, 0);
-        const totalInvestimentos = resInvest.data.reduce((acc, curr) => acc + curr.valor, 0);
-        const sobra = totalReceitas - totalDespesas - totalInvestimentos;
+    const [resReceitas, resDespesas, resInvest] = await Promise.all([
+      acompanhamentoService.getReceitas(userId),
+      acompanhamentoService.getDespesas(userId),
+      acompanhamentoService.getInvestimentos(userId)
+    ]);
 
-        // Cria um prompt de sistema invisível com a realidade do usuário
-        const dadosContexto = `
-          [INFORMAÇÃO DE SISTEMA - DADOS REAIS DO USUÁRIO]
-          - Renda Total: R$ ${totalReceitas.toFixed(2)}
-          - Despesas Totais: R$ ${totalDespesas.toFixed(2)}
-          - Total já Investido: R$ ${totalInvestimentos.toFixed(2)}
-          - Dinheiro Livre (Sobra atual): R$ ${sobra.toFixed(2)}
-          
-          Diretriz para a IA: Você é o YeBOT. Use os dados acima para dar respostas ultra-personalizadas. Se o usuário perguntar como investir, sugira com base na "Sobra atual" e no "Total já Investido". Se as despesas estiverem muito altas comparadas à renda, dê um alerta. Responda com formatação Markdown limpa, tabelas se necessário, e tom direto.
-        `;
-        
-        setContextoFinanceiro(dadosContexto);
-      } catch (error) {
-        console.error("Erro ao sincronizar dados com o YeBOT:", error);
-      }
-    }
+    const receitas = resReceitas.data;
+    const despesas = resDespesas.data;
+    const investimentos = resInvest.data;
+
+    const totalReceitas = receitas.reduce(
+      (acc, curr) => acc + curr.valor,
+      0
+    );
+
+    const totalDespesas = despesas.reduce(
+      (acc, curr) => acc + curr.valor,
+      0
+    );
+
+    const totalInvestimentos = investimentos.reduce(
+      (acc, curr) => acc + curr.valor,
+      0
+    );
+
+    const sobra =
+      totalReceitas -
+      totalDespesas -
+      totalInvestimentos;
+
+    // =====================
+    // AGRUPAMENTO
+    // =====================
+
+    const despesasPorCategoria = {};
+    const receitasPorCategoria = {};
+    const investimentosPorCategoria = {};
+
+    despesas.forEach((item) => {
+      const categoria =
+        item.categoria?.nome || "Sem categoria";
+
+      despesasPorCategoria[categoria] =
+        (despesasPorCategoria[categoria] || 0) +
+        item.valor;
+    });
+
+    receitas.forEach((item) => {
+      const categoria =
+        item.categoria?.nome || "Sem categoria";
+
+      receitasPorCategoria[categoria] =
+        (receitasPorCategoria[categoria] || 0) +
+        item.valor;
+    });
+
+    investimentos.forEach((item) => {
+      const categoria =
+        item.categoria?.nome || "Sem categoria";
+
+      investimentosPorCategoria[categoria] =
+        (investimentosPorCategoria[categoria] || 0) +
+        item.valor;
+    });
+
+    // =====================
+    // RANKING DE DESPESAS
+    // =====================
+
+    const rankingDespesas = Object.entries(
+      despesasPorCategoria
+    )
+      .sort((a, b) => b[1] - a[1])
+      .map(([categoria, valor]) => {
+        const percentual =
+          totalDespesas > 0
+            ? ((valor / totalDespesas) * 100).toFixed(1)
+            : 0;
+
+        return `- ${categoria}: R$ ${valor.toFixed(
+          2
+        )} (${percentual}%)`;
+      })
+      .join("\n");
+
+    const rankingReceitas = Object.entries(
+      receitasPorCategoria
+    )
+      .sort((a, b) => b[1] - a[1])
+      .map(([categoria, valor]) => {
+        const percentual =
+          totalReceitas > 0
+            ? ((valor / totalReceitas) * 100).toFixed(1)
+            : 0;
+
+        return `- ${categoria}: R$ ${valor.toFixed(
+          2
+        )} (${percentual}%)`;
+      })
+      .join("\n");
+
+    const rankingInvestimentos = Object.entries(
+      investimentosPorCategoria
+    )
+      .sort((a, b) => b[1] - a[1])
+      .map(([categoria, valor]) => {
+        const percentual =
+          totalInvestimentos > 0
+            ? (
+                (valor / totalInvestimentos) *
+                100
+              ).toFixed(1)
+            : 0;
+
+        return `- ${categoria}: R$ ${valor.toFixed(
+          2
+        )} (${percentual}%)`;
+      })
+      .join("\n");
+
+    // =====================
+    // CONTEXTO DO GEMINI
+    // =====================
+
+    const dadosContexto = `
+[INFORMAÇÕES REAIS DO USUÁRIO]
+
+RESUMO GERAL:
+- Receita Total: R$ ${totalReceitas.toFixed(2)}
+- Despesa Total: R$ ${totalDespesas.toFixed(2)}
+- Investimentos Totais: R$ ${totalInvestimentos.toFixed(2)}
+- Saldo Livre Atual: R$ ${sobra.toFixed(2)}
+
+DESPESAS POR CATEGORIA:
+${rankingDespesas}
+
+RECEITAS POR CATEGORIA:
+${rankingReceitas}
+
+INVESTIMENTOS POR CATEGORIA:
+${rankingInvestimentos}
+
+REGRAS IMPORTANTES:
+
+Você é o YeBOT.
+
+Você possui acesso aos dados financeiros reais do usuário.
+
+Ao responder:
+
+1. Analise as categorias de despesas e seus percentuais.
+2. Identifique excessos de gastos.
+3. Sugira economias práticas.
+4. Sempre cite categorias relevantes.
+5. Quando o usuário perguntar sobre investimentos, considere:
+   - Saldo livre atual.
+   - Patrimônio já investido.
+6. Seja objetivo e personalizado.
+7. Nunca invente valores.
+8. Utilize os dados fornecidos acima como fonte principal.
+9. Compare categorias quando fizer sentido.
+10. Mostre cálculos e percentuais quando ajudar o usuário.
+`;
+
+    setContextoFinanceiro(dadosContexto);
+  } catch (error) {
+    console.error(
+      "Erro ao sincronizar dados com o YeBOT:",
+      error
+    );
+  }
+}
 
     carregarDadosDoBanco();
   }, []);
