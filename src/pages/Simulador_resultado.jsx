@@ -114,57 +114,61 @@ function Simulador_resultado() {
 
 						<div className="dados__form">
 
-							<input
-								type="text"
-								placeholder="Nome"
-								value={nome}
-								onChange={(e) =>
-									dispatch({
-										type: "SET_FIELD",
-										field: "nome",
-										value: e.target.value,
-									})
-								}
-							/>
+					<input
+						className="dados__field"
+						type="text"
+						placeholder="Nome"
+						value={nome}
+						onChange={(e) =>
+							dispatch({
+								type: "SET_FIELD",
+								field: "nome",
+								value: e.target.value,
+							})
+						}
+					/>
 
-							<input
-								type="email"
-								placeholder="Email"
-								value={email}
-								onChange={(e) =>
-									dispatch({
-										type: "SET_FIELD",
-										field: "email",
-										value: e.target.value,
-									})
-								}
-							/>
+					<input
+						className="dados__field"
+						type="email"
+						placeholder="Email"
+						value={email}
+						onChange={(e) =>
+							dispatch({
+								type: "SET_FIELD",
+								field: "email",
+								value: e.target.value,
+							})
+						}
+					/>
 
-							<input
-								type="text"
-								placeholder="CPF"
-								value={cpf}
-								onChange={(e) =>
-									dispatch({
-										type: "SET_FIELD",
-										field: "cpf",
-										value: formatCPF(e.target.value),
-									})
-								}
-							/>
+					<input
+						className="dados__field"
+						type="text"
+						placeholder="CPF"
+						value={cpf}
+						onChange={(e) =>
+							dispatch({
+								type: "SET_FIELD",
+								field: "cpf",
+								value: formatCPF(e.target.value),
+							})
+						}
+					/>
 
-							<input
-								type="tel"
-								placeholder="Telefone"
-								value={telefone}
-								onChange={(e) =>
-									dispatch({
-										type: "SET_FIELD",
-										field: "telefone",
-										value: formatTel(e.target.value),
-									})
-								}
-							/>
+					<input
+						className="dados__field"
+						type="tel"
+						placeholder="Telefone"
+						value={telefone}
+						onChange={(e) =>
+							dispatch({
+								type: "SET_FIELD",
+								field: "telefone",
+								value: formatTel(e.target.value),
+							})
+						}
+					/>
 
 							<div className="dados__check-row">
 								<button
