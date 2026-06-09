@@ -1,6 +1,9 @@
 import React from "react";
+
 import "../styles/Inicio.css";
+
 import { Navbar } from "../components/Navbar.jsx";
+
 import { Link, useNavigate } from "react-router-dom";
 
 function Inicio() {
