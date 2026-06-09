@@ -1,123 +1,152 @@
 import { Link, useNavigate } from "react-router-dom";
+
 import "./Navbar.css";
+
 import Logo from "../assets/logo.svg";
 
 export function Navbar() {
+	const navigate = useNavigate();
 
-  const navigate = useNavigate();
+	const token = localStorage.getItem("token");
 
-  const token = localStorage.getItem("token");
+	const handleLogout = () => {
+		localStorage.removeItem("token");
+		localStorage.removeItem("userId");
 
-  const handleLogout = () => {
+		navigate("/");
+        window.location.reload();
+	};
+	return (
+		<header className="navbar">
+			<div className="logo">
+				<Link to="/">
+					<img src={Logo} alt="Yeezus Logo" />
+				</Link>
+			</div>
 
-    localStorage.removeItem("token");
+			<ul className="nav-links">
+				{token && (
+					<>
+						<li>
+							<Link to="/">Inicio</Link>
+						</li>
+                        <li>
+							<Link to="/acompanhamento">Acompanhamento</Link>
+						</li>
+						<li className="menu-item">
+							<Link to="/sobre">Sobre</Link>
 
-    navigate("/entrar");
-  };
+							<ul className="dropdown">
+								<div className="dropdown-column">
+									<h4>A Yeezus</h4>
 
-  return (
-    <header className="navbar">
+									<li>
+										<Link to="/sobre/empresa">
+											Sobre a empresa
+										</Link>
+									</li>
 
-      <div className="logo">
-        <Link to="/">
-          <img src={Logo} alt="Yeezus Logo" />
-        </Link>
-      </div>
+									<li>
+										<Link to="/sobre/historia">
+											História
+										</Link>
+									</li>
+								</div>
 
-      {/* Sempre aparece */}
-      <ul className="nav-links">
+								<div className="dropdown-column">
+									<h4>Nossa atuação</h4>
 
-        <li>
-          <Link to="/">Inicio</Link>
-        </li>
+									<li>
+										<Link to="/sobre/equipe">Equipe</Link>
+									</li>
 
-        <li><Link to="/support">Support</Link></li>
-        <li><Link to="/YeBOT">yeBOT</Link></li>
+									<li>
+										<Link to="/sobre/compliance">
+											Compliance
+										</Link>
+									</li>
+								</div>
 
-        <li><Link to="/relatorios">Relatórios</Link></li>
-        <li><Link to="/planejamento">Planejamento</Link></li>
-        {/* Só aparece logado */}
-        {token && (
-          <>
-            <li className="menu-item">
+								<div className="dropdown-column">
+									<h4>Educação</h4>
 
-              <Link to="/sobre">
-                Sobre
-              </Link>
+									<li>
+										<Link to="/sobre/educacao">
+											Yeezus Educação
+										</Link>
+									</li>
 
-              <ul className="dropdown">
+									<li>
+										<Link to="/sobre/escritorio">
+											Encontre um escritório
+										</Link>
+									</li>
+								</div>
 
-                <div className="dropdown-column">
-                  <h4>A Yeezus</h4>
-                  <li><Link to="/sobre/empresa">Sobre a empresa</Link></li>
-                  <li><Link to="/sobre/historia">História</Link></li>
-                </div>
+								<div className="dropdown-column">
+									<h4>Trabalhe conosco</h4>
 
-                <div className="dropdown-column">
-                  <h4>Nossa atuação</h4>
-                  <li><Link to="/sobre/equipe">Equipe</Link></li>
-                  <li><Link to="/sobre/compliance">Compliance</Link></li>
-                </div>
+									<li>
+										<Link to="/sobre/assessor">
+											Seja um assessor
+										</Link>
+									</li>
 
-                <div className="dropdown-column">
-                  <h4>Educação</h4>
-                  <li><Link to="/sobre/educacao">Yeezus Educação</Link></li>
-                  <li><Link to="/sobre/escritorio">Encontre um escritório</Link></li>
-                </div>
+									<li>
+										<Link to="/sobre/consultor">
+											Seja um consultor
+										</Link>
+									</li>
 
-                <div className="dropdown-column">
-                  <h4>Trabalhe conosco</h4>
-                  <li><Link to="/sobre/assessor">Seja um assessor</Link></li>
-                  <li><Link to="/sobre/consultor">Seja um consultor</Link></li>
-                  <li><Link to="/sobre/fornecedor">Seja um fornecedor</Link></li>
-                </div>
+									<li>
+										<Link to="/sobre/fornecedor">
+											Seja um fornecedor
+										</Link>
+									</li>
+								</div>
+							</ul>
+						</li>
 
-              </ul>
-            </li>
+						{/* <li>
+							<Link to="/support">
+								Support
+							</Link>
+						</li> */}
 
-            <li>
-              <Link to="/support">
-                Support
-              </Link>
-            </li>
+						<li>
+							<Link to="/YeBOT">yeBOT</Link>
+						</li>
+						<li>
+							<Link to="/planejamento">Planejamento</Link>
+						</li>
+						<li>
+							<Link to="/relatorios">Relatório</Link>
+						</li>
+					</>
+				)}
+			</ul>
 
-            <li>
-              <Link to="/YeBOT">
-                yeBOT
-              </Link>
-            </li>
-          </>
-        )}
+			<div className="nav-right">
+				{!token && (
+					<>
+						<Link className="entrar" to="/entrar">
+							Entrar
+						</Link>
 
-      </ul>
+						<Link className="cadastrar" to="/cadastro">
+							Abra sua Conta
+						</Link>
+					</>
+				)}
 
-      <div className="nav-right">
-
-        {!token && (
-          <>
-            <Link className="entrar" to="/entrar">
-              Entrar
-            </Link>
-
-            <Link className="cadastrar" to="/cadastro">
-              Abra sua Conta
-            </Link>
-          </>
-        )}
-
-        {token && (
-          <button
-            className="cadastrar"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        )}
-
-      </div>
-
-    </header>
-  );
+				{token && (
+					<button className="logout" onClick={handleLogout}>
+						Logout
+					</button>
+				)}
+			</div>
+		</header>
+	);
 }
 
 export default Navbar;
