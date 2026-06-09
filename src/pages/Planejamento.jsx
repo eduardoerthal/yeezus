@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Planejamento.css";
 import { Navbar } from "../components/Navbar.jsx";
+import acompanhamentoService from "../api/acompanhamentoService";
 
 const blocos = [
 	{
@@ -58,7 +59,45 @@ function formatarBRL(valor) {
 }
 
 function Planejamento() {
-	const [renda, setRenda] = useState(5000);
+	const [renda, setRenda] = useState(0);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		async function carregarRenda() {
+			try {
+				const userId = Number(localStorage.getItem("userId"));
+				
+				if (!userId) {
+					setLoading(false);
+					return;
+				}
+
+				const response = await acompanhamentoService.getReceitas(userId);
+				
+				// Filtra as receitas apenas do mês atual (para não inflar a renda com meses antigos)
+				const agora = new Date();
+				const receitasDoMes = response.data.filter((item) => {
+					if (!item.dataCriacao) return false;
+					const data = new Date(item.dataCriacao);
+					return (
+						data.getMonth() === agora.getMonth() &&
+						data.getFullYear() === agora.getFullYear()
+					);
+				});
+
+				// Soma o valor total das receitas do mês
+				const totalReceitas = receitasDoMes.reduce((acc, curr) => acc + curr.valor, 0);
+				setRenda(totalReceitas);
+
+			} catch (error) {
+				console.error("Erro ao buscar receitas do banco:", error);
+			} finally {
+				setLoading(false);
+			}
+		}
+
+		carregarRenda();
+	}, []);
 
 	const necessidades = renda * 0.5;
 	const desejos = renda * 0.3;
@@ -86,20 +125,22 @@ function Planejamento() {
 					<div className="calculadora">
 						<div className="calculadora__input">
 							<label htmlFor="renda">
-								Sua renda líquida mensal
+								Sua renda líquida deste mês
 							</label>
 							<div className="calculadora__campo">
-								<span className="calculadora__prefixo">R$</span>
-								<input
-									id="renda"
-									type="number"
-									min="0"
-									step="100"
-									value={renda}
-									onChange={(e) =>
-										setRenda(Number(e.target.value) || 0)
-									}
-								/>
+								{loading ? (
+									<span style={{ padding: '10px', color: '#a1a1aa' }}>
+										Buscando dados no banco...
+									</span>
+								) : (
+									<>
+										<span className="calculadora__prefixo">R$</span>
+										{/* Removemos o input e colocamos um span para apenas exibir o valor do banco */}
+										<span style={{ fontSize: '1.1rem', color: '#fff', padding: '10px 15px', fontWeight: 'bold' }}>
+											{renda.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+										</span>
+									</>
+								)}
 							</div>
 						</div>
 
