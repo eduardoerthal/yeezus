@@ -14,7 +14,6 @@ Yeezus é uma plataforma de gerenciamento financeiro pessoal desenvolvida para s
 
 ## 🛠️ Tecnologias Utilizadas
 * **Frontend:** React, Vite, Framer Motion, Recharts, Material UI (MUI), Lucide React.
-* **Backend:** Python, FastAPI, SQLAlchemy.
 * **Banco de Dados:** PostgreSQL / SQLite.
 * **IA:** Google Gemini API (via Google Gen AI SDK).
 
