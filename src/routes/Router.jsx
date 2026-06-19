@@ -21,34 +21,36 @@ import Simulador_invest from "../pages/Simulador_invest.jsx";
 import Simulador_resultado from "../pages/Simulador_resultado.jsx";
 
 import PrivateRoute from "./PrivateRoute.jsx";
+import AdminRoute from "./AdminRoute.jsx";
+import AdminDashboard from "../pages/AdminDashboard";
 import Acompanhamento from "../pages/Acompanhamento.jsx";
 import Simulador_perfil from "../pages/Simulador_perfil.jsx";
 
 function Router() {
-  return (
-    <BrowserRouter>
+	return (
+		<BrowserRouter>
 
-		<Routes>
-			{/* Públicas */}
-			<Route path="/" element={<Inicio />} />
-			<Route path="/entrar" element={<Entrar />} />
-			<Route path="/cadastro" element={<Cadastro />} />
-			<Route path="/cadastro_resto" element={<Cadastro_resto />} />
+			<Routes>
+				{/* Públicas */}
+				<Route path="/" element={<Inicio />} />
+				<Route path="/entrar" element={<Entrar />} />
+				<Route path="/cadastro" element={<Cadastro />} />
+				<Route path="/cadastro_resto" element={<Cadastro_resto />} />
 
-			<Route path="simulador_invest" element={<Simulador_invest />} />
+				<Route path="simulador_invest" element={<Simulador_invest />} />
 
-			<Route path="simulador_perfil" element={<Simulador_perfil />} />
+				<Route path="simulador_perfil" element={<Simulador_perfil />} />
 
-			<Route path="/simulador_resultado" element={<Simulador_resultado />} />
-			{/* Privadas */}
-			<Route
-				path="/YeBOT"
-				element={
-					<PrivateRoute>
-						<ChatPage />
-					</PrivateRoute>
-				}
-			/>
+				<Route path="/simulador_resultado" element={<Simulador_resultado />} />
+				{/* Privadas */}
+				<Route
+					path="/YeBOT"
+					element={
+						<PrivateRoute>
+							<ChatPage />
+						</PrivateRoute>
+					}
+				/>
 
 				<Route
 					path="/sobre"
@@ -58,14 +60,14 @@ function Router() {
 						</PrivateRoute>
 					}
 				/>
-			<Route
-				path="/acompanhamento"
-				element={
-					<PrivateRoute>
-						<Acompanhamento />
-					</PrivateRoute>
-				}
-			/>
+				<Route
+					path="/acompanhamento"
+					element={
+						<PrivateRoute>
+							<Acompanhamento />
+						</PrivateRoute>
+					}
+				/>
 				<Route
 					path="/planejamento"
 					element={
@@ -83,9 +85,17 @@ function Router() {
 						</PrivateRoute>
 					}
 				/>
+				<Route
+					path="/admin/logs"
+					element={
+						<AdminRoute>
+							<AdminDashboard />
+						</AdminRoute>
+					}
+				/>
 			</Routes>
 		</BrowserRouter>
-					);
+	);
 }
 
 export default Router;

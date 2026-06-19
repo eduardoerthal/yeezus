@@ -88,16 +88,14 @@ function Entrar() {
 		});
 	};
 
-	const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
 		e.preventDefault();
 
 		if (!state.email || !state.senha) {
 			dispatch({
 				type: "error",
-
 				message: "Preencha todos os campos",
 			});
-
 			return;
 		}
 
@@ -108,19 +106,28 @@ function Entrar() {
 			});
 
 			if (response.status === 200) {
-                console.log(response)
-				localStorage.setItem("token", response.data.token);
-                localStorage.setItem("userId", response.data.userId);
-				navigate("/");
-                window.location.reload();
+				const token = response.data.token;
+				const userId = response.data.userId;
+				
+				localStorage.setItem("token", token);
+				localStorage.setItem("userId", userId);
+
+				const payloadBase64 = token.split('.')[1];
+				const payloadDecoded = JSON.parse(atob(payloadBase64));
+
+				if (payloadDecoded.role === "ROLE_ADMIN") {
+					navigate("/admin/logs");
+				} else {
+					navigate("/acompanhamento");
+				}
+				
+				window.location.reload();
 			}
 		} catch (error) {
 			dispatch({
 				type: "error",
-
 				message: error.response?.data || "Erro interno do servidor",
 			});
-
 			console.error(error);
 		}
 	};
